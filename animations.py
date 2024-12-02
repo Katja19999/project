@@ -10,12 +10,10 @@ class ObjectAnimation:
     # For one-animation
     # OBJECTS: decorations, walls, bullets, explosions
 
-    def __init__(self, path, file, width, height, time, angle=None, reset=True):
+    def __init__(self, path, file, width, height, time, reset=True):
 
         self.animation = sheet(file, path, width, height, True)
         self._animation = self.animation.copy()
-        if angle:
-            self.rotate(angle)
 
         self.timer = Timer(time)
         self.frame = 0

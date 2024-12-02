@@ -2,17 +2,20 @@ import os as os
 import sys as sys
 
 import pygame as pg
-from pygame import image
+from pygame import image, transform
+
+IMAGE_PATH = 'Images'
+REZ_FACTOR = 2
 
 
 # READY
-def load(file, path=(), alpha=False):
+def load(file, path=IMAGE_PATH, alpha=False):
     # Load IMAGE FILE
     # By specified PATH
     # IF EXISTS
 
     try:
-        img = image.load(os.path.join(*path, file))
+        img = transform.scale_by(image.load(os.path.join(*path, file)), REZ_FACTOR)
 
         return img.convert_alpha() if alpha else img.convert()
     except FileNotFoundError or FileExistsError:
@@ -30,15 +33,15 @@ def crop(img, x, y, width, height):
     return img.subsurface((x, y, width, height))
 
 
-def sheet(file, path, width, height, alpha):
+def sheet(file, width, height, alpha, path=IMAGE_PATH):
     # Create a SPRITE SHEET
     # Out of an IMAGE
     # And return a list of FRAMES
 
-    sprite_sheet = load(file, path, alpha)
+    sprite_sheet = load(file, path=path, alpha=alpha)
 
-    if not (width & height):
-        width = height = min((sprite_sheet.get_width(), sprite_sheet.get_height()))
+    width = width * REZ_FACTOR
+    height = height * REZ_FACTOR
 
     images = []
     for x in range(sprite_sheet.get_width() // width):
