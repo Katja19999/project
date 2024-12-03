@@ -1,8 +1,6 @@
-# import pygame as pg
-from pygame import sprite
 from math import radians, sin, cos, hypot
 
-# from animations import ObjectAnimation
+from pygame import sprite
 
 
 class Object(sprite.Sprite):
@@ -19,13 +17,16 @@ class Object(sprite.Sprite):
         self.rect = self.image.get_rect(int(self.x), int(self.y))
 
     def update(self, dx, dy, delta):
-
         self.x += dx * delta
         self.y += dy * delta
 
-        self.image = self.animation()
+        self.image = self.animation.image
 
         self.rect.center = int(self.x, self.y)
+
+    def hit(self, other):
+        if hasattr(self, 'damage') and hasattr(other, 'health'):
+            other.damage(self.damage)
 
 
 class Explosion(Object):
@@ -41,14 +42,10 @@ class Explosion(Object):
         if self.animation.end:
             self.kill()
 
-    def hit(self, other):
-        if hasattr(other, 'health'):
-            other.health -= self.damage
-
 
 class Bullet(Object):
 
-    def __init__(self, coordinates, speed, angle, distance, animation, damage, death_event=None):
+    def __init__(self, coordinates, angle, speed, distance, animation, damage, death_event=None):
         super().__init__(coordinates, animation)
 
         self.animation.rotate(angle)
@@ -71,12 +68,24 @@ class Bullet(Object):
             self.kill()
 
     def hit(self, other):
-        if hasattr(other, 'health'):
-            other.health -= self.damage
-
+        super().hit(other)
         self.kill()
 
     def kill(self):
         if self.death_event:
             self.death_event.add(self.groups())
         super().kill()
+
+
+class Collectables(Object):
+
+    def __init__(self, coordinates, animation, attribute, value):
+        super().__init__(coordinates, animation)
+
+        self.attribute = attribute
+        self.value = value
+
+    def hit(self, other):
+        if hasattr(other, 'collect'):
+            other.collect(self.attribute, self.value)
+            self.kill()

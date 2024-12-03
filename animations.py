@@ -17,24 +17,25 @@ class ObjectAnimation:
 
         self.timer = Timer(time)
         self.frame = 0
-        self._len = len(self.animation) - 1
+        self.length = len(self.animation) - 1
         self.reset = reset
 
     def rotate(self, angle):
         self._animation = [transform.rotate(img, angle) for img in self.animation]
 
-    def __call__(self):
+    @property
+    def end(self):
+        return self.frame >= self.length
+
+    @property
+    def image(self):
         if self.timer and not self.end:
             self.frame += 1
 
         if self.reset:
-            self.frame %= self._len
+            self.frame %= self.length
 
         return self._animation[self.frame]
-
-    @property
-    def end(self):
-        return self.frame >= self._len
 
 
 class CharacterAnimation:
@@ -44,14 +45,14 @@ class CharacterAnimation:
 
     def __init__(self, states, sheets, path, time):
 
-        self.dirs = ['up', 'left', 'down', 'right']
+        self.directions = ['up', 'left', 'down', 'right']
         self.states = states
 
         self.animation = {}
         self.load_animation(sheets, path)
 
         self.timer = Timer(time)
-        self.dir = self.dirs[0]
+        self.dir = self.directions[0]
         self.state = self.states[0]
         self.frame = 0
 
@@ -61,7 +62,7 @@ class CharacterAnimation:
 
     def load_animation(self, sheets, path):
         ind = 0
-        for direction in self.dirs[:-1]:
+        for direction in self.directions[:-1]:
             self.animation[direction] = {}
 
             for state in self.states:
@@ -77,24 +78,25 @@ class CharacterAnimation:
         return self.animation[self.dir][self.state]
 
     @property
-    def _len(self):
+    def length(self):
         return len(self.playing) - 1
 
     @property
     def end(self):
-        return self.frame >= self._len
+        return self.frame >= self.length
 
     def change_state(self, value):
         if value in self.states:
             self.state = value
 
     def change_dir(self, value):
-        if value in self.dirs:
+        if value in self.directions:
             self.dir = value
 
-    def __call__(self):
+    @property
+    def image(self):
         if self.timer and not self.end:
             self.frame += 1
-            self.frame %= self._len
+            self.frame %= self.length
 
         return self.playing[self.frame]
