@@ -25,8 +25,8 @@ class Object(sprite.Sprite):
         self.rect.center = int(self.x, self.y)
 
     def hit(self, other):
-        if hasattr(self, 'damage') and hasattr(other, 'health'):
-            other.damage(self.damage)
+        if hasattr(self, 'damage') and hasattr(other, 'get_hit'):
+            other.get_hit(self.damage)
 
 
 class Explosion(Object):
@@ -72,12 +72,12 @@ class Bullet(Object):
         self.kill()
 
     def kill(self):
-        if self.death_event:
-            self.death_event.add(self.groups())
+        if hasattr(self, 'death_event'):
+            pass
         super().kill()
 
 
-class Collectables(Object):
+class Collectable(Object):
 
     def __init__(self, coordinates, animation, attribute, value):
         super().__init__(coordinates, animation)
