@@ -9,18 +9,18 @@ class Object(sprite.Sprite):
         super().__init__()
 
         self.animation = animation
-        self.image = self.animation()
+        self.image = self.animation.current_image
 
         self.x = coordinates[0]
         self.y = coordinates[1]
 
         self.rect = self.image.get_rect(int(self.x), int(self.y))
 
-    def update(self, dx, dy, delta):
-        self.x += dx * delta
-        self.y += dy * delta
+    def update(self, delta_x, delta_y, delta_time):
+        self.x += delta_x * delta_time
+        self.y += delta_y * delta_time
 
-        self.image = self.animation.image
+        self.image = self.animation.current_image
 
         self.rect.center = int(self.x, self.y)
 
@@ -36,8 +36,8 @@ class Explosion(Object):
 
         self.damage = damage
 
-    def update(self, dx, dy, delta):
-        super().update(dx, dy, delta)
+    def update(self, delta_x, delta_y, delta_time):
+        super().update(delta_x, delta_y, delta_time)
 
         if self.animation.end:
             self.kill()
@@ -51,8 +51,8 @@ class Bullet(Object):
         self.animation.rotate(angle)
 
         rads = radians(angle)
-        self.dx = cos(rads) * speed
-        self.dy = sin(rads) * speed
+        self.speed_x = cos(rads) * speed
+        self.speed_y = sin(rads) * speed
 
         self.start = coordinates
         self.distance = distance
@@ -62,7 +62,7 @@ class Bullet(Object):
             self.death_event = death_event
 
     def update(self, dx, dy, delta):
-        super().update(dx + self.dx, dy + self.dy, delta)
+        super().update(dx + self.speed_x, dy + self.speed_y, delta)
 
         if hypot(self.x - self.start[0], self.y - self.start[1]) > self.distance:
             self.kill()

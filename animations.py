@@ -15,27 +15,27 @@ class ObjectAnimation:
         self.animation = sheet(file, path, width, height, True)
         self._animation = self.animation.copy()
 
-        self.timer = Timer(time)
-        self.frame = 0
-        self.length = len(self.animation) - 1
-        self.reset = reset
+        self.shift_timer = Timer(time)
+        self.current_frame = 0
+        self.anim_length = len(self.animation) - 1
+        self.auto_reset = reset
 
     def rotate(self, angle):
         self._animation = [transform.rotate(img, angle) for img in self.animation]
 
     @property
     def end(self):
-        return self.frame >= self.length
+        return self.current_frame >= self.anim_length
 
     @property
-    def image(self):
-        if self.timer and not self.end:
-            self.frame += 1
+    def current_image(self):
+        if self.shift_timer and not self.end:
+            self.current_frame += 1
 
-        if self.reset:
-            self.frame %= self.length
+        if self.auto_reset:
+            self.current_frame %= self.anim_length
 
-        return self._animation[self.frame]
+        return self._animation[self.current_frame]
 
 
 class CharacterAnimation:
@@ -45,16 +45,16 @@ class CharacterAnimation:
 
     def __init__(self, states, sheets, path, time):
 
-        self.directions = ['up', 'left', 'down', 'right']
+        self.directions = ['up', 'down', 'left', 'right']
         self.states = states
 
         self.animation = {}
         self.load_animation(sheets, path)
 
-        self.timer = Timer(time)
-        self.dir = self.directions[0]
-        self.state = self.states[0]
-        self.frame = 0
+        self.shift_timer = Timer(time)
+        self.current_direction = self.directions[0]
+        self.current_state = self.states[0]
+        self.current_frame = 0
 
     @staticmethod
     def load_sheet(path, file, width, height):
@@ -69,34 +69,34 @@ class CharacterAnimation:
                 self.animation[direction][state] = self.load_sheet(path, *sheets[ind])
                 ind += 1
 
-        self.animation[self.dir[-1]] = {}
-        for state in self.states:
-            self.animation[self.dir[-1]][state] = transform.flip(self.animation[self.dir[1]][state], True, False)
+        self.animation[self.directions[-1]] = dict(zip([(state, [transform.flip(img, True, False)
+                                                                 for img in animation])
+                                                        for state, animation in self.animation[self.directions[2]]]))
 
     @property
-    def playing(self):
-        return self.animation[self.dir][self.state]
+    def current_animation(self):
+        return self.animation[self.directions][self.current_state]
 
     @property
-    def length(self):
-        return len(self.playing) - 1
+    def anim_length(self):
+        return len(self.current_animation) - 1
 
     @property
     def end(self):
-        return self.frame >= self.length
+        return self.current_frame >= self.anim_length
 
     def change_state(self, value):
         if value in self.states:
-            self.state = value
+            self.current_state = value
 
     def change_dir(self, value):
         if value in self.directions:
-            self.dir = value
+            self.current_direction = value
 
     @property
-    def image(self):
-        if self.timer and not self.end:
-            self.frame += 1
-            self.frame %= self.length
+    def current_image(self):
+        if self.shift_timer and not self.end:
+            self.current_frame += 1
+            self.current_frame %= self.anim_length
 
-        return self.playing[self.frame]
+        return self.current_animation[self.current_frame]
