@@ -2,18 +2,18 @@ from pygame.time import get_ticks
 
 
 class Timer:
-    def __init__(self, delta, reset=True):
+    def __init__(self, delta, auto_reset=True):
 
         self.delta = delta
         self.prev = get_ticks()
 
-        self.reset = reset
+        self.auto_reset = auto_reset
 
-    def set(self):
+    def reset(self):
         self.prev = get_ticks()
 
     def __call__(self):
         left = get_ticks() - self.prev > self.delta
-        if left and self.reset:
-            self.set()
+        if left and self.auto_reset:
+            self.reset()
         return left
