@@ -45,7 +45,7 @@ class CharacterAnimation:
 
     def __init__(self, states, sheets, path, time):
 
-        self.directions = ['up', 'down', 'left', 'right']
+        self.directions = ['left', 'right']
         self.states = states
 
         self.animation = {}
@@ -61,42 +61,40 @@ class CharacterAnimation:
         return sheet(file, path, width, height, True)
 
     def load_animation(self, sheets, path):
-        ind = 0
-        for direction in self.directions[:-1]:
-            self.animation[direction] = {}
+        self.animation[self.directions[0]] = {}
+        self.animation[self.directions[1]] = {}
 
-            for state in self.states:
-                self.animation[direction][state] = self.load_sheet(path, *sheets[ind])
-                ind += 1
+        for ind, state in enumerate(self.states):
+            self.animation[self.directions[0]][state] = self.load_sheet(path, *sheets[ind])
 
-        self.animation[self.directions[-1]] = dict(zip([(state, [transform.flip(img, True, False)
-                                                                 for img in animation])
-                                                        for state, animation in self.animation[self.directions[2]]]))
+        for state, animation in self.animation[self.directions[0]].items():
+            self.animation[self.directions[1]][state] = [transform.flip(img, True, False)
+                                                         for img in animation]
 
     @property
     def current_animation(self):
         return self.animation[self.directions][self.current_state]
 
     @property
-    def anim_length(self):
+    def animation_length(self):
         return len(self.current_animation) - 1
 
     @property
     def end(self):
-        return self.current_frame >= self.anim_length
-
-    def change_state(self, value):
-        if value in self.states:
-            self.current_state = value
-
-    def change_dir(self, value):
-        if value in self.directions:
-            self.current_direction = value
+        return self.current_frame >= self.animation_length
 
     @property
     def current_image(self):
         if self.shift_timer and not self.end:
             self.current_frame += 1
-            self.current_frame %= self.anim_length
+            self.current_frame %= self.animation_length
 
-        return self.current_animation[self.current_frame]
+        return self.current_animation[self.current_frame], self.current_frame
+
+    def change_state(self, value):
+        if value in self.states:
+            self.current_state = value
+
+    def change_direction(self, value):
+        if value in self.directions:
+            self.current_direction = value
