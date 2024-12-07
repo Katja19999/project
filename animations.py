@@ -43,7 +43,7 @@ class CharacterAnimation:
     # For multiple-animation
     # OBJECTS: characters
 
-    def __init__(self, states, sheets, path, time):
+    def __init__(self, path, states, sheets, time):
 
         self.directions = ['left', 'right']
         self.states = states

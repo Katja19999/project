@@ -11,18 +11,18 @@ class Object(sprite.Sprite):
         self.animation = animation
         self.image = self.animation.current_image
 
-        self.x = coordinates[0]
-        self.y = coordinates[1]
+        self.map_x = coordinates[0]
+        self.map_y = coordinates[1]
 
-        self.rect = self.image.get_rect(int(self.x), int(self.y))
+        self.rect = self.image.get_rect(int(self.map_x), int(self.map_y))
 
     def update(self, delta_x, delta_y, delta_time):
-        self.x += delta_x * delta_time
-        self.y += delta_y * delta_time
+        self.map_x += delta_x * delta_time
+        self.map_y += delta_y * delta_time
 
         self.image = self.animation.current_image
 
-        self.rect.center = int(self.x, self.y)
+        self.rect.center = int(self.map_x, self.map_y)
 
 
 class Explosion(Object):
@@ -58,7 +58,7 @@ class Bullet(Object):
     def update(self, delta_x, delta_y, delta_time):
         super().update(delta_x + self.speed_x, delta_y + self.speed_y, delta_time)
 
-        if hypot(self.x - self.start[0], self.y - self.start[1]) > self.distance:
+        if hypot(self.map_x - self.start[0], self.map_y - self.start[1]) > self.distance:
             self.kill()
 
 
