@@ -12,7 +12,8 @@ class Timer:
     def reset(self):
         self.prev = get_ticks()
 
-    def __call__(self):
+    @property
+    def ready(self):
         left = get_ticks() - self.prev > self.delta
         if left and self.auto_reset:
             self.reset()
