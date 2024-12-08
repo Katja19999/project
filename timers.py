@@ -2,9 +2,9 @@ from pygame.time import get_ticks
 
 
 class Timer:
-    def __init__(self, delta, auto_reset=True):
+    def __init__(self, time, auto_reset=True):
 
-        self.delta = delta
+        self.time = time
         self.prev = get_ticks()
 
         self.auto_reset = auto_reset
@@ -14,7 +14,7 @@ class Timer:
 
     @property
     def ready(self):
-        left = get_ticks() - self.prev > self.delta
+        left = get_ticks() - self.prev > self.time
         if left and self.auto_reset:
             self.reset()
         return left

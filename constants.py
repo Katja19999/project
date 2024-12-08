@@ -15,4 +15,9 @@ IMAGE_PATH = 'images'
 SOUND_PATH = 'sounds'
 
 # IN_GAME PARAMETERS
+SCREEN_DEPTH = 1
+SCREEN_FLAGS = 0
 FPS = 90
+
+# COLORS
+BLACK = 'black'
