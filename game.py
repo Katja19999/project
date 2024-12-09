@@ -17,11 +17,11 @@ class GameHandler:
         self.display = pg.display.set_mode(RESOLUTION, SCREEN_FLAGS, SCREEN_DEPTH)
         self.clock = pg.time.Clock()
 
-        self._previous = pg.time.get_ticks()
         self.modes = {
             'game': None
         }
         self.current_mode = self.modes['game']
+        self._previous = pg.time.get_ticks()
 
     @staticmethod
     def handle_quit():
