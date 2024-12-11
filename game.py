@@ -22,6 +22,7 @@ class GameHandler:
         }
         self.current_mode = self.modes['game']
         self._previous = pg.time.get_ticks()
+        self._delta_time = 0
 
     @staticmethod
     def handle_quit():
@@ -29,19 +30,16 @@ class GameHandler:
             pg.quit()
             sys.exit()
 
-    @property
-    def delta_time(self):
-        delta_time = pg.time.get_ticks() - self._previous
+    def update_delta_time(self):
+        self._delta_time = pg.time.get_ticks() - self._previous
         self._previous = pg.time.get_ticks()
-
-        return delta_time
 
     def set_mode(self, mode):
         if mode in self.modes.keys():
             self.current_mode = self.modes[mode]
 
     def update(self):
-        self.current_mode.update(self.delta_time)
+        self.current_mode.update(self._delta_time)
 
     def draw(self):
         self.display.fill(BLACK)
