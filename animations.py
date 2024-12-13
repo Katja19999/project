@@ -6,16 +6,20 @@ from timers import Timer
 
 class Animation(Image):
 
-    def __init__(self, path, file, time, flip, angle, auto_reset=True):
+    def __init__(self, path, file, time, flip, angle=None, auto_reset=True):
 
         self.animation = self.sprite_sheet(path, file, flip)
-        self.animation = [transform.rotate(img, angle) for img in self.animation]
+        if angle:
+            self.set_angle(angle)
 
         self.timer = Timer(time)
         self.auto_reset = auto_reset
 
         self._frame = 0
         self._length = len(self.animation) - 1
+
+    def set_angle(self, angle):
+        self.animation = [transform.rotate(img, angle) for img in self.animation]
 
     @property
     def animation_ended(self):
