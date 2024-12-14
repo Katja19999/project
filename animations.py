@@ -1,14 +1,14 @@
 from pygame import transform
 
-from images import Image
+from images import sprite_sheet
 from timers import Timer
 
 
-class Animation(Image):
+class Animation:
 
     def __init__(self, path, file, time, flip, angle=None, auto_reset=True):
-
-        self.animation = self.sprite_sheet(path, file, flip)
+        super().__init__()
+        self.animation = sprite_sheet(path, file, flip)
         if angle:
             self.set_angle(angle)
 
