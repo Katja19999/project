@@ -1,6 +1,6 @@
 from pygame import transform
 
-from images import sprite_sheet
+from images import load
 from timers import Timer
 
 
@@ -8,7 +8,7 @@ class Animation:
 
     def __init__(self, path, file, time, flip, angle=None, auto_reset=True):
         super().__init__()
-        self.animation = sprite_sheet(path, file, flip)
+        self.animation = self.sprite_sheet(path, file, flip)
         if angle:
             self.set_angle(angle)
 
@@ -17,6 +17,17 @@ class Animation:
 
         self._frame = 0
         self._length = len(self.animation) - 1
+
+    @staticmethod
+    def crop(surface, x, y, width, height):
+        return surface.subsurface(x, y, width, height)
+
+    def sprite_sheet(self, path, file, flipped=False):
+        sheet = load(path, file)
+
+        _width = _height = sheet.get_height()
+        return [transform.flip(self.crop(sheet, row, 0, _width, _height), flipped, False)
+                for row in range(sheet.get_width() // _width)]
 
     def set_angle(self, angle):
         self.animation = [transform.rotate(img, angle) for img in self.animation]

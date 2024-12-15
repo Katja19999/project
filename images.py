@@ -18,16 +18,3 @@ def load(path, file, scale=SCALE, alpha=True):
 
         pg.quit()
         sys.exit()
-
-
-def crop(surface, x, y, width, height):
-    return surface.subsurface(x, y, width, height)
-
-
-def sprite_sheet(path, file, flipped=False):
-    sheet = load(path, file)
-
-    _width = _height = sheet.get_height()
-
-    return [pg.transform.flip(crop(sheet, row, 0, _width, _height), flipped, False)
-            for row in range(sheet.get_width() // _width)]
