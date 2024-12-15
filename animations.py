@@ -4,6 +4,7 @@ from images import load
 from timers import Timer
 
 
+# Custom animation
 class Animation:
 
     def __init__(self, path, file, time, flip, angle=None, auto_reset=True):
