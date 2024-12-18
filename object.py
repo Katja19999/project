@@ -19,5 +19,5 @@ class GameObject(sprite.Sprite):
 
         self.image = self.animation.current_image
 
-    def collide(self, *args, **kwargs):
+    def collide(self, object2):
         pass

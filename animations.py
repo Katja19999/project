@@ -1,5 +1,6 @@
 from pygame import transform
 
+from constants import ANIMATION_CHANGE
 from images import load
 from timers import Timer
 
@@ -7,7 +8,7 @@ from timers import Timer
 # Custom animation
 class Animation:
 
-    def __init__(self, path, file, time, flip, angle=None, auto_reset=True):
+    def __init__(self, path, file, time=ANIMATION_CHANGE, flip=False, angle=None, auto_reset=True):
         super().__init__()
         self.animation = self.sprite_sheet(path, file, flip)
         if angle:
