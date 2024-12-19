@@ -39,4 +39,4 @@ class Attack:
     def __call__(self, self_object, aim_object):
         if self.range > hypot(aim_object[0] - self_object[0], aim_object[1] - self_object[1]):
             aim_object.health -= self.damage
-            self.reload.reset()
+        self.reload.reset()
