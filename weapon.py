@@ -19,7 +19,7 @@ class Shoot:
 
     def __call__(self, self_position, aim_position):
         self._group.add(self.attack(self_position, atan2(aim_position[1] - self_position[1],
-                                                               aim_position[0] - self_position)))
+                                                         aim_position[0] - self_position)))
         self.reload.reset()
 
 
