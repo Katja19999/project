@@ -1,6 +1,6 @@
 from math import atan2, hypot
 
-from timers import Timer
+from basefiles.timers import Timer
 
 
 # Callable classes used for managing attacks

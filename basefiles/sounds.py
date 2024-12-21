@@ -4,7 +4,7 @@ import sys as sys
 import pygame as pg
 from pygame import mixer
 
-from constants import SOUND_PATH
+from constants.constants import SOUND_PATH
 
 
 # READY

@@ -3,7 +3,7 @@ import sys as sys
 
 import pygame as pg
 
-from constants import IMAGE_PATH, SCALE
+from constants.constants import IMAGE_PATH, SCALE
 
 
 def load(path, file, scale=SCALE, alpha=True):

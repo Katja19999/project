@@ -18,6 +18,3 @@ class GameObject(sprite.Sprite):
         )
 
         self.image = self.animation.current_image
-
-    def collide(self, object2):
-        pass

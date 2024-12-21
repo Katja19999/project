@@ -1,4 +1,4 @@
-from object import GameObject
+from basefiles.object import GameObject
 
 
 class Explosion(GameObject):

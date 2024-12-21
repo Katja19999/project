@@ -1,6 +1,6 @@
 from pygame import transform
 
-from constants import ANIMATION_CHANGE
+from constants.constants import ANIMATION_CHANGE
 from images import load
 from timers import Timer
 

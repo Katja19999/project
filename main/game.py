@@ -1,7 +1,7 @@
 import pygame as pg
 import sys as sys
 
-from constants import RESOLUTION, SCREEN_FLAGS, SCREEN_DEPTH, BLACK, FPS
+from constants.constants import RESOLUTION, SCREEN_FLAGS, SCREEN_DEPTH, BLACK, FPS
 
 
 class GameHandler:
