@@ -8,7 +8,7 @@ class GameObject(sprite.Sprite):
 
         self.animation = animation
         self.image = self.animation.current_image
-
+    
         self.rect = self.image.get_rect(center=position)
 
     def update(self, delta_x, delta_y, delta_time, *args):
