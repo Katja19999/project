@@ -2,6 +2,7 @@ import math
 
 
 class VectorPoint:
+    # manage coordinates and speeds
 
     def __init__(self, x, y, starting_x=None, starting_y=None):
 
