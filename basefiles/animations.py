@@ -1,49 +1,36 @@
-from pygame import transform
-
-from constants.constants import ANIMATION_CHANGE
-from images import load
+from images import sprite_sheet
 from timers import Timer
 
 
 # Custom animation
 class Animation:
 
-    def __init__(self, path, file, time=ANIMATION_CHANGE, flip=False, angle=None, auto_reset=True):
-        super().__init__()
-        self.animation = self.sprite_sheet(path, file, flip)
-        if angle:
-            self.set_angle(angle)
+    def __init__(self, path, file, size, duration, auto_reset):
 
-        self.timer = Timer(time)
+        self.animation = sprite_sheet(path, file, size)
+
+        self.length = len(self.animation) - 2
+        self.frame = 0
+
+        self.timer = Timer(duration // self.length)
         self.auto_reset = auto_reset
 
-        self._frame = 0
-        self._length = len(self.animation) - 1
-
-    @staticmethod
-    def crop(surface, x, y, width, height):
-        return surface.subsurface(x, y, width, height)
-
-    def sprite_sheet(self, path, file, flipped=False):
-        sheet = load(path, file)
-
-        _width = _height = sheet.get_height()
-        return [transform.flip(self.crop(sheet, row, 0, _width, _height), flipped, False)
-                for row in range(sheet.get_width() // _width)]
-
-    def set_angle(self, angle):
-        self.animation = [transform.rotate(img, angle) for img in self.animation]
+    @property
+    def end(self):
+        return self.frame > self.length
 
     @property
-    def animation_ended(self):
-        return self._frame >= self._length
+    def image(self):
+        self.update()
+        return self.animation[self.frame]
 
-    @property
-    def current_image(self):
-        if self.timer.ready and not self.animation_ended:
-            self._frame += 1
+    def reset(self):
+        self.frame = 0
 
-        if self.auto_reset:
-            self._frame %= self._length
-
-        return self.animation[self._frame]
+    def update(self):
+        if self.timer.ready:
+            if not self.end:
+                self.frame += 1
+            else:
+                if self.auto_reset:
+                    self.reset()
