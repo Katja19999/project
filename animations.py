@@ -13,7 +13,7 @@ class Animation:
         self.timer = Timer(duration)
 
     @property
-    def image(self):
+    def frame(self):
         if self.timer.ready:
             self.animation.rotate(-1)
 

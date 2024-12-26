@@ -1,14 +1,24 @@
+import pygame as pg
+
+
 class Constants:
     # size
     size = 16
     scale = 2
-    width = size * scale * 30
-    height = size * scale * 20
+    cells_h = 30
+    cells_v = 20
+    width = size * scale * cells_h
+    height = size * scale * cells_v
+    absolute_center = (width // 2 - size * 2 * scale, height // 2 - size * 2 * scale)
 
     # display
     window = (width, height)
-    flags = 0
+    flags = pg.FULLSCREEN | pg.HWSURFACE
     depth = 32
+
+    # in-game parameters
+    fps = 90
+    clock = pg.time.Clock()
 
     # files
     image_path = 'images'
