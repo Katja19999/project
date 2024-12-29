@@ -1,4 +1,5 @@
 from collections import deque
+from pygame import transform
 
 from images import sprite_sheet
 from timers import Timer
@@ -11,6 +12,10 @@ class Animation:
 
         self.animation = deque(sprite_sheet(path, file, size))
         self.timer = Timer(duration)
+
+    @property
+    def flipped(self):
+        return [transform.flip(image, False, True) for image in self.animation]
 
     @property
     def frame(self):
