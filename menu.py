@@ -15,7 +15,7 @@ class Menu:
         pg.mixer.music.load(music)
         pg.mixer.music.play()
 
-    def update(self, mouse_pos, mouse_click):
+    def update(self, mouse_click, mouse_pos):
         button_hash = None
         _sprites = self.ui
         for spr in _sprites:

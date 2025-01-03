@@ -15,6 +15,7 @@ class Constants:
     window = (width, height)
     flags = pg.FULLSCREEN | pg.HWSURFACE
     depth = 32
+    display = pg.display.set_mode(window, flags, depth)
 
     # in-game parameters
     fps = 90
