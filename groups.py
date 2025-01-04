@@ -18,6 +18,10 @@ class RelativeGroup(sprite.AbstractGroup):
         self.dh = self.absolute_position_h - relative_position_h
         self.dv = self.absolute_position_v - relative_position_v
 
+    def update(self, relative_position, *args, **kwargs):
+        self.update_camera(*relative_position)
+        super().update(*args, **kwargs)
+
     def draw(self, surface, *args):
         sprites = self.sprites()
         surface_blit = surface.blit

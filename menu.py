@@ -2,6 +2,8 @@ import pygame as pg
 
 from pygame import sprite
 
+from handler import GameHandler
+
 
 class Menu:
 
@@ -22,7 +24,12 @@ class Menu:
             button_hash = spr.update(mouse_pos, mouse_click)
 
         if button_hash:
-            self.functions[button_hash]()
+            function = self.functions[button_hash]
+            function[0](function[1])
 
     def draw(self, surface):
         self.ui.draw(surface)
+
+
+start_menu = Menu
+end_menu = Menu
