@@ -27,8 +27,8 @@ def sprite_sheet(path, file, size):
 
     sheet = load(path, file)
 
-    crop_width = size[0]
-    crop_height = size[1]
+    crop_width = size[0] * Constants.scale
+    crop_height = size[1] * Constants.scale
 
     image_width = sheet.get_width()
     image_height = sheet.get_height()
@@ -37,7 +37,7 @@ def sprite_sheet(path, file, size):
     for x in range(image_width // crop_width):
         for y in range(image_height // crop_height):
             cropped_images.append(
-                sheet.subsurface((x, y, crop_width, crop_height))
+                sheet.subsurface((x * crop_width, y * crop_height, crop_width, crop_height))
             )
 
     return cropped_images

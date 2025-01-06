@@ -1,11 +1,16 @@
 import pygame as pg
 from pygame import sprite
 
-from objects import StaticObject
+from images import load
 
 
-class Image(StaticObject):
-    pass
+class Image(sprite.Sprite):
+
+    def __init__(self, position, path, file, alpha=False):
+        super().__init__()
+
+        self.image = load(path, file, alpha=alpha)
+        self.rect = self.image.get_rect(topleft=position)
 
 
 class Text(sprite.Sprite):
@@ -22,10 +27,10 @@ class Text(sprite.Sprite):
 
 class Button(sprite.Sprite):
 
-    def __init__(self, group, position, animations, hashcode):
-        super().__init__(group)
+    def __init__(self, position, images, hashcode):
+        super().__init__()
 
-        self.animations = dict(zip(['normal', 'hover'], animations))
+        self.images = dict(zip(['normal', 'hover'], images))
         self.state = 'normal'
 
         self.rect = self.image.get_rect(center=position)
@@ -34,7 +39,7 @@ class Button(sprite.Sprite):
 
     @property
     def image(self):
-        return self.animations[self.state].frame
+        return self.images[self.state]
 
     def update(self, mouse_pos, mouse_click):
         if self.rect.collidepoint(mouse_pos):
@@ -42,3 +47,5 @@ class Button(sprite.Sprite):
 
             if mouse_click:
                 return self.hashcode
+        else:
+            self.state = 'normal'

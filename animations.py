@@ -10,8 +10,10 @@ class Animation:
 
     def __init__(self, path, file, size, duration):
 
-        self.animation = deque(sprite_sheet(path, file, size))
-        self.timer = Timer(duration)
+        self.animation = sprite_sheet(path, file, size)
+        self._current = 0
+        self._length = len(self.animation)
+        self.timer = Timer(duration // self._length)
 
     @property
     def flipped(self):
@@ -20,6 +22,6 @@ class Animation:
     @property
     def frame(self):
         if self.timer.ready:
-            self.animation.rotate(-1)
+            self._current = (self._current + 1) % self._length
 
-        return self.animation[0]
+        return self.animation[self._current]
