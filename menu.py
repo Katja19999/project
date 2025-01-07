@@ -29,10 +29,10 @@ class Menu:
 
 
 start_menu = Menu(Image((0, 0), ('menu', 'start'), 'menu.png'),
-                  Button(Constants.absolute_center,
+                  Button((Constants.absolute_center[0], Constants.absolute_center[1] + 112),
                          sprite_sheet(('menu', 'start'), 'play_button.png', (144, 48)),
                          '#play'),
-                  Button((Constants.absolute_center[0], Constants.absolute_center[1] + 100),
+                  Button((Constants.absolute_center[0], Constants.absolute_center[1] + 224),
                          sprite_sheet(('menu', 'start'), 'quit_button.png', (144, 48)),
                          '#quit')
                   )

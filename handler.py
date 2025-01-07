@@ -18,6 +18,13 @@ class GameHandler:
 
     _events = {'keys': [], 'mouse': [False, (0, 0)]}
 
+    def __init__(self):
+
+        self.functions = {
+            '#quit': self.end,
+            '#play': (self.open, 'start'),
+        }
+
     @staticmethod
     def end():
         pg.quit()
@@ -52,7 +59,11 @@ class GameHandler:
         self.events()
         _result = self.mode.update(*self._events['mouse'])
         if _result:
-            pass
+            function = self.functions[_result]
+            if type(function) is tuple:
+                function[0](function[1])
+            else:
+                function()
 
     def draw(self):
         self.mode.draw(self.display)
