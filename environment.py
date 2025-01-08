@@ -1,19 +1,23 @@
-import pygame as pg
-
 from constants import Constants
 from groups import CameraGroup
 from images import sprite_sheet
+from levels import load_level
 
 
 class Environment(CameraGroup):
 
-    cell_size = Constants.cell_size
-    images = dict(zip([0, 1, 2, 3, 4, 5, 6], sprite_sheet(('game', 'map'), 'tilemap.png', (16, 16), alpha=False)))
-
     def __init__(self, level):
         super().__init__()
 
-        self.level = level
+        self.cell_size = Constants.cell_size
+        self.images = dict(zip([0, 1, 2, 3, 4, 5, 6], sprite_sheet(('game', 'map'), 'tilemap.png', (16, 16), alpha=False)))
+
+        self.levels = [load_level((Constants.data_directory, 'game', 'map'), 'level1.csv'),
+                       load_level((Constants.data_directory, 'game', 'map'), 'level1.csv')]
+        self.level = self.levels[0]
+
+    def set_level(self, level):
+        self.level = self.levels[level]
 
     def draw(self, surface, *args):
         surface_blit = surface.blit

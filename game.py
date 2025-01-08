@@ -6,33 +6,21 @@ from environment import Environment
 
 class InGameHandler:
 
-    environment = Environment(Constants.level1)
+    def __init__(self):
 
-    paused = False
+        self.environment = Environment(Constants.level1)
 
-    x = 200
-    y = 200
+        self.paused = False
 
     def _events(self, keys):
         if keys[pg.K_p]:
             self.paused = not self.paused
 
-    def update(self, keys, *args):
+    def update(self, keys, mouse_click, mouse_pos):
         self._events(keys)
 
-        if keys[pg.K_w]:
-            self.y -= 5
-        elif keys[pg.K_s]:
-            self.y += 5
-
-        if keys[pg.K_a]:
-            self.x -= 5
-        elif keys[pg.K_d]:
-            self.x += 5
-
         if not self.paused:
-
-            self.environment.update((self.x, self.y))
+            self.environment.update((0, 0))
 
     def draw(self, surface):
         self.environment.draw(surface)

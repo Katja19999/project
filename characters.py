@@ -8,16 +8,6 @@ from timers import Timer
 
 class Character(sprite.Sprite):
 
-    rect = pg.Rect(0, 0, 64, 64)
-    collision_rect = pg.Rect(0, 0, 32, 32)
-
-    action_timer = Timer(1000)
-    action = 'stand'
-    frame = 0
-
-    dh = 0
-    dv = 0
-
     def __init__(self, animation_path, sound_path, position, health, speed):
         super().__init__()
 
@@ -26,6 +16,16 @@ class Character(sprite.Sprite):
 
         self.health = health
         self.speed_h, self.speed_v = speed
+
+        self.rect = pg.Rect(0, 0, 64, 64)
+        self.collision_rect = pg.Rect(0, 0, 32, 32)
+
+        self.action_timer = Timer(1000)
+        self.action = 'stand'
+        self.frame = 0
+
+        self.dh = 0
+        self.dv = 0
 
         self.rect.center = position
         self.collision_rect.center = position

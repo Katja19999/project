@@ -1,7 +1,5 @@
 import pygame as pg
 
-from levels import load_level
-
 
 class GameConstants:
 
@@ -28,10 +26,6 @@ class GameConstants:
 
     # files
     data_directory = 'data'
-
-    # levels
-    level1 = load_level((data_directory, 'game', 'map'), 'level1.csv')
-    level2 = load_level((data_directory, 'game', 'map'), 'level2.csv')
 
 
 Constants = GameConstants()

@@ -12,16 +12,16 @@ class GameHandler:
     pg.mixer.music.load(os.path.join(Constants.data_directory, 'music.mp3'))
     pg.mixer.music.play()
 
-    display = Constants.display
-    clock = Constants.clock
-    fps = Constants.fps
-
-    modes = {'start': start_menu, 'game': game, 'end': None}
-    mode = modes['start']
-
-    _events = {'keys': pg.key.get_pressed(), 'mouse': [False, (0, 0)]}
-
     def __init__(self):
+
+        self.display = Constants.display
+        self.clock = Constants.clock
+        self.fps = Constants.fps
+
+        self.modes = {'start': start_menu, 'game': game, 'end': None}
+        self.mode = self.modes['start']
+
+        self._events = {'keys': pg.key.get_pressed(), 'mouse': [False, (0, 0)]}
 
         self.functions = {
             '#quit': self.end,
