@@ -22,10 +22,10 @@ def load(path, file, scale=Constants.scale, alpha=True):
         sys.exit()
 
 
-def sprite_sheet(path, file, size):
+def sprite_sheet(path, file, size, alpha=True):
     # load sprite sheets
 
-    sheet = load(path, file)
+    sheet = load(path, file, alpha=alpha)
 
     crop_width = size[0] * Constants.scale
     crop_height = size[1] * Constants.scale

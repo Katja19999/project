@@ -16,11 +16,13 @@ class Menu:
             pg.mixer.music.load(music)
             pg.mixer.music.play()
 
-    def update(self, mouse_click, mouse_pos):
+    def update(self, _keys, mouse_click, mouse_pos):
         button_hash = None
         _sprites = self.ui.sprites()
         for spr in _sprites:
             button_hash = spr.update(mouse_pos, mouse_click)
+            if button_hash:
+                break
 
         return button_hash
 

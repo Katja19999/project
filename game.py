@@ -1,32 +1,29 @@
 import pygame as pg
 
+from constants import Constants
+from environment import Environment
 
-class InGameHAndler:
 
-    player = None
-    objects = None
-    enemies = None
-    environment = None
+class InGameHandler:
 
-    def __init__(self, game):
+    environment = Environment(Constants.level1)
 
-        self.game = game
-        self.functions = {'#quit': (self.game.open, 'start')}
+    paused = False
 
-    def update(self, keys):
-        if keys[pg.K_q]:
-            function = self.functions['#quit']
-            function[0](function[1])
+    def _events(self, keys):
+        if keys[pg.K_p]:
+            self.paused = not self.paused
 
-        self.player.update()
-        relative_position = self.player.rect.topleft
+    def update(self, keys, *args):
+        self._events(keys)
 
-        self.objects.update(relative_position)
-        self.enemies.update(relative_position)
-        self.environment.update(relative_position)
+        if self.paused:
+            relative_position = (0, 0)
+
+            self.environment.update(relative_position)
 
     def draw(self, surface):
         self.environment.draw(surface)
-        self.enemies.draw(surface)
-        self.player.draw(surface)
-        self.objects.draw(surface)
+
+
+game = InGameHandler()
