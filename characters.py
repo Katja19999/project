@@ -1,57 +1,57 @@
 import pygame as pg
 
 from pygame import sprite
-from images import sprite_sheet
-from sounds import load
-from timers import Timer
+
+from states import State
 
 
 class Character(sprite.Sprite):
 
-    def __init__(self, animation_path, sound_path, position, health, speed):
+    def __init__(self, path, position, speed, health):
         super().__init__()
 
-        self.animations = self.load_animations(animation_path)
-        self.sounds = self.load_sounds(sound_path)
+        self.states = {
+            'stand': State(path, 'stand.png'),
+            'walk': State(path, 'walk.png'),
+            'attack': State(path, 'attack.png', auto_reset=False),
+            'damage': State(path, 'damage.png', auto_reset=False),
+            'die': State(path, 'die.png', auto_reset=False)
+        }
+        self.state = 'stand'
+
+        self.position = list(position)
+        self.rect = pg.Rect(0, 0, 64, 64)
+        self._collision_rect = pg.Rect(0, 0, 32, 32)
+        self.set_position(self.position)
+
+        self.speed_h, self.speed_v = speed
+        self.dh, self.dv = 0, 0
 
         self.health = health
-        self.speed_h, self.speed_v = speed
 
-        self.rect = pg.Rect(0, 0, 64, 64)
-        self.collision_rect = pg.Rect(0, 0, 32, 32)
+    @property
+    def image(self):
+        return self.states[self.state].image
 
-        self.action_timer = Timer(1000)
-        self.action = 'stand'
-        self.frame = 0
-
-        self.dh = 0
-        self.dv = 0
-
+    def set_position(self, position):
         self.rect.center = position
-        self.collision_rect.center = position
+        self._collision_rect.center = position
 
-    def load_animations(self, path):
-        _size = self.rect.size
-        animations = {
-            'stand': sprite_sheet(path, 'stand.png', _size),
-            'walk': sprite_sheet(path, 'stand.png', _size),
-            'attack': sprite_sheet(path, 'stand.png', _size),
-            'damage': sprite_sheet(path, 'stand.png', _size),
-            'die': sprite_sheet(path, 'stand.png', _size),
-        }
-        return animations
+    def update_state(self):
+        if self.health <= 0:
+            self.state = 'die'
+        elif self.dh == 0 and self.dv == 0:
+            self.state = 'stand'
+        else:
+            self.state = 'walk'
 
-    @staticmethod
-    def load_sounds(path):
-        animations = {
-            'stand': load(path, 'stand'),
-            'walk': load(path, 'walk'),
-            'attack': load(path, 'attack'),
-            'damage': load(path, 'damage'),
-            'die': load(path, 'die'),
-        }
-        return animations
+    def control(self, *args, **kwargs):
+        pass
 
-    def update_animation(self):
-        if self.action_timer.ready:
-            self.frame = (self.frame + 1) % len(self.animations[self.action])
+    def update(self, delta_time, *args, **kwargs):
+        self.states[self.state].update()
+
+        self.position[0] += self.dh * delta_time / 100
+        self.position[1] += self.dv * delta_time / 100
+
+        self.set_position(self.position)

@@ -1,14 +1,15 @@
 import pygame as pg
 
-from constants import Constants
 from environment import Environment
+from player import PlayerGroup
 
 
 class InGameHandler:
 
     def __init__(self):
 
-        self.environment = Environment(Constants.level1)
+        self.environment = Environment()
+        self.player = PlayerGroup()
 
         self.paused = False
 
@@ -16,14 +17,16 @@ class InGameHandler:
         if keys[pg.K_p]:
             self.paused = not self.paused
 
-    def update(self, keys, mouse_click, mouse_pos):
+    def update(self, delta_time, keys, mouse_click, mouse_pos):
         self._events(keys)
 
         if not self.paused:
-            self.environment.update((0, 0))
+            self.player.update(delta_time, keys, mouse_pos, mouse_click)
+            self.environment.update(self.player.pos)
 
     def draw(self, surface):
         self.environment.draw(surface)
+        self.player.draw(surface)
 
 
 game = InGameHandler()

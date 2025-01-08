@@ -6,7 +6,7 @@ from levels import load_level
 
 class Environment(CameraGroup):
 
-    def __init__(self, level):
+    def __init__(self):
         super().__init__()
 
         self.cell_size = Constants.cell_size
@@ -36,7 +36,7 @@ class Environment(CameraGroup):
         _start_v = self.dv // _size
 
         surface.fill('#12051b')
-        for row in range(_start_v, _start_v + _cells_v + 1):
-            for col in range(_start_h, _start_h + _cells_h + 1):
+        for row in range(int(_start_v), int(_start_v + _cells_v + 1)):
+            for col in range(int(_start_h), int(_start_h + _cells_h + 1)):
                 if 0 <= row < len(_level) and 0 <= col < len(_level[0]) and _level[row][col]:
                     surface_blit(_images[_level[row][col]], (col * _size - _dh, row * _size - _dv))

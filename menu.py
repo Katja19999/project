@@ -1,6 +1,3 @@
-import os
-import pygame as pg
-
 from pygame import sprite
 from constants import Constants
 from images import sprite_sheet
@@ -13,7 +10,7 @@ class Menu:
 
         self.ui = sprite.Group(background, *elements)
 
-    def update(self, _keys, mouse_click, mouse_pos):
+    def update(self, _delta_time, _keys, mouse_click, mouse_pos):
         button_hash = None
         _sprites = self.ui.sprites()
         for spr in _sprites:
