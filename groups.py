@@ -11,8 +11,8 @@ class CameraGroup(sprite.AbstractGroup):
     dv = 0
 
     def update_camera(self, relative_position_h, relative_position_v):
-        self.dh = self.aph - relative_position_h
-        self.dv = self.apv - relative_position_v
+        self.dh = relative_position_h - self.aph
+        self.dv = relative_position_v - self.apv
 
     def update(self, relative_position, *args, **kwargs):
         self.update_camera(*relative_position)

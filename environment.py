@@ -6,7 +6,7 @@ from images import sprite_sheet
 class Environment(CameraGroup):
 
     cell_size = Constants.cell_size
-    images = dict(zip([0, 1, 2, 3, 4, 5, 6, 7, 8], sprite_sheet(('game', 'map'), 'tilemap.png', (16, 16), alpha=False)))
+    images = dict(zip([0, 1, 2, 3, 4, 5, 6], sprite_sheet(('game', 'map'), 'tilemap.png', (16, 16), alpha=False)))
     objects = []
 
     def __init__(self, level):
@@ -33,6 +33,5 @@ class Environment(CameraGroup):
         surface.fill('#12051b')
         for row in range(_start_v, _start_v + _cells_v + 1):
             for col in range(_start_h, _start_h + _cells_h + 1):
-                print(row, col)
                 if 0 <= row < len(_level) and 0 <= col < len(_level[0]) and _level[row][col]:
                     surface_blit(_images[_level[row][col]], (col * _size - _dh, row * _size - _dv))

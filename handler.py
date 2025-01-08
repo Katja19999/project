@@ -64,7 +64,6 @@ class GameHandler:
         elif self._events['keys'][pg.K_q]:
             self.open('start')
 
-
     def draw(self):
         self.mode.draw(self.display)
 
