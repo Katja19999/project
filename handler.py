@@ -1,5 +1,6 @@
-import pygame as pg
 import sys as sys
+import os
+import pygame as pg
 
 from constants import Constants
 from menu import start_menu
@@ -8,7 +9,8 @@ from game import game
 
 class GameHandler:
 
-    pg.event.set_allowed([pg.MOUSEBUTTONDOWN, pg.MOUSEBUTTONUP, pg.KEYDOWN, pg.KEYUP])
+    pg.mixer.music.load(os.path.join(Constants.data_directory, 'music.mp3'))
+    pg.mixer.music.play()
 
     display = Constants.display
     clock = Constants.clock

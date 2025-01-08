@@ -1,3 +1,5 @@
+import pygame as pg
+
 from constants import Constants
 from groups import CameraGroup
 from images import sprite_sheet
@@ -7,7 +9,6 @@ class Environment(CameraGroup):
 
     cell_size = Constants.cell_size
     images = dict(zip([0, 1, 2, 3, 4, 5, 6], sprite_sheet(('game', 'map'), 'tilemap.png', (16, 16), alpha=False)))
-    objects = []
 
     def __init__(self, level):
         super().__init__()

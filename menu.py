@@ -1,3 +1,4 @@
+import os
 import pygame as pg
 
 from pygame import sprite
@@ -8,13 +9,9 @@ from ui import Image, Button
 
 class Menu:
 
-    def __init__(self, background, *elements, music=None):
+    def __init__(self, background, *elements):
 
         self.ui = sprite.Group(background, *elements)
-
-        if music:
-            pg.mixer.music.load(music)
-            pg.mixer.music.play()
 
     def update(self, _keys, mouse_click, mouse_pos):
         button_hash = None
@@ -36,5 +33,5 @@ start_menu = Menu(Image((0, 0), ('menu', 'start'), 'menu.png'),
                          '#play'),
                   Button((Constants.absolute_center[0], Constants.absolute_center[1] + 224),
                          sprite_sheet(('menu', 'start'), 'quit_button.png', (144, 48)),
-                         '#quit')
+                         '#quit'),
                   )

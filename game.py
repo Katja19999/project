@@ -10,8 +10,8 @@ class InGameHandler:
 
     paused = False
 
-    x = 0
-    y = 0
+    x = 200
+    y = 200
 
     def _events(self, keys):
         if keys[pg.K_p]:

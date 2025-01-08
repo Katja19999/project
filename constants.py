@@ -5,6 +5,10 @@ from levels import load_level
 
 class GameConstants:
 
+    pg.mixer.init()
+    pg.init()
+    pg.event.set_allowed([pg.MOUSEBUTTONDOWN, pg.MOUSEBUTTONUP, pg.KEYDOWN, pg.KEYUP])
+
     # display
     flags = pg.FULLSCREEN | pg.HWSURFACE
     depth = 32
