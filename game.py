@@ -1,5 +1,3 @@
-import pygame as pg
-
 from environment import Environment
 from enemies import Enemies
 from player import PlayerGroup
@@ -7,7 +5,9 @@ from player import PlayerGroup
 
 class InGameHandler:
 
-    def __init__(self):
+    def __init__(self, handler):
+
+        self.handler = handler
 
         self.environment = Environment()
         self.enemies = Enemies(self.environment.level, 30)
@@ -15,10 +15,8 @@ class InGameHandler:
 
         self.paused = False
 
-    def update(self, events):
-        if events['keys'][pg.K_p]:
-            print(self.paused)
-            self.paused = not self.paused
+    def update(self):
+        events = self.handler.events
 
         if not self.paused:
             self.player.update(events)
@@ -31,6 +29,3 @@ class InGameHandler:
         self.environment.draw(surface)
         self.enemies.draw(surface)
         self.player.draw(surface)
-
-
-game = InGameHandler()

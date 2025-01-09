@@ -49,3 +49,7 @@ class Button(sprite.Sprite):
                 return self.hashcode
         else:
             self.state = 'normal'
+
+
+menu_background = Image((0, 0), 'menu', 'menu.png')
+quit_button = Button(())

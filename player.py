@@ -4,6 +4,7 @@ from characters import Character
 
 
 class Player(Character):
+
     def __init__(self):
         super().__init__(('game', 'characters', 'player'), (1000, 1000), 10, 100)
 

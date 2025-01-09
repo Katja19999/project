@@ -3,8 +3,8 @@ import os
 import pygame as pg
 
 from constants import Constants
-from menu import start_menu
-from game import game
+from menu import Menu
+from game import InGameHandler
 
 
 class GameHandler:
@@ -20,16 +20,10 @@ class GameHandler:
 
         self.previous = pg.time.get_ticks()
 
-        self.modes = {'start': start_menu, 'game': game, 'end': None}
+        self.modes = {'start': Menu(self, ), 'game': InGameHandler(self), 'end': None}
         self.mode = self.modes['start']
 
-        self._events = {'delta_time': 0, 'keys': pg.key.get_pressed(), 'mouse': [False, (0, 0)]}
-
-        self.functions = {
-            '#quit': self.end,
-            '#exit': (self.open, 'start'),
-            '#play': (self.open, 'game'),
-        }
+        self.events = {'delta_time': 0, 'keys': pg.key.get_pressed(), 'mouse': [False, (0, 0)]}
 
     @staticmethod
     def end():
@@ -39,39 +33,26 @@ class GameHandler:
     def open(self, mode):
         self.mode = self.modes[mode]
 
-    def events(self):
+    def handle_events(self):
         _events = pg.event.get()
 
-        self._events['delta_time'] = pg.time.get_ticks() - self.previous
+        self.events['delta_time'] = pg.time.get_ticks() - self.previous
         self.previous = pg.time.get_ticks()
-        self._events['mouse'][1] = pg.mouse.get_pos()
-        self._events['keys'] = pg.key.get_pressed()
+        self.events['mouse'][1] = pg.mouse.get_pos()
+        self.events['keys'] = pg.key.get_pressed()
 
         for event in _events:
             if event.type == pg.MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    self._events['mouse'][0] = True
+                    self.events['mouse'][0] = True
 
             if event.type == pg.MOUSEBUTTONUP:
                 if event.button == 1:
-                    self._events['mouse'][0] = False
+                    self.events['mouse'][0] = False
 
     def update(self):
-        self.events()
-
-        _result = self.mode.update(self._events)
-        if _result:
-            function = self.functions[_result]
-            if type(function) is tuple:
-                function[0](function[1])
-            else:
-                function()
-
-        elif self._events['keys'][pg.K_ESCAPE]:
-            self.end()
-
-        elif self._events['keys'][pg.K_q]:
-            self.open('start')
+        self.handle_events()
+        self.mode.update()
 
     def draw(self):
         self.mode.draw(self.display)

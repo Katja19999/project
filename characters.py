@@ -1,11 +1,14 @@
 import pygame as pg
 
 from pygame import sprite
+from math import sqrt
 
 from states import State
 
 
 class Character(sprite.Sprite):
+
+    normalize = sqrt(2)
 
     def __init__(self, path, position, speed, health):
         super().__init__()
@@ -44,10 +47,7 @@ class Character(sprite.Sprite):
         elif self.dh == 0 and self.dv == 0:
             self.state = 'stand'
         else:
-            if self.dh < 0:
-                self.flipped = True
-            else:
-                self.flipped = False
+            self.flipped = self.dh < 0
             self.state = 'walk'
 
     def control(self, *args, **kwargs):
@@ -55,6 +55,10 @@ class Character(sprite.Sprite):
 
     def update(self, delta_time, *args, **kwargs):
         self.states[self.state].update()
+
+        if self.dh != 0 and self.dv != 0:
+            self.dh /= self.normalize
+            self.dv /= self.normalize
 
         self.position[0] += self.dh * delta_time / 100
         self.position[1] += self.dv * delta_time / 100
