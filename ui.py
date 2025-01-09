@@ -41,7 +41,7 @@ class Button(sprite.Sprite):
     def image(self):
         return self.images[self.state]
 
-    def update(self, mouse_pos, mouse_click):
+    def update(self, mouse_click, mouse_pos):
         if self.rect.collidepoint(mouse_pos):
             self.state = 'hover'
 

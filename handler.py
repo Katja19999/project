@@ -18,13 +18,12 @@ class GameHandler:
         self.clock = Constants.clock
         self.fps = Constants.fps
 
-        self.delta_time = 0
         self.previous = pg.time.get_ticks()
 
         self.modes = {'start': start_menu, 'game': game, 'end': None}
         self.mode = self.modes['start']
 
-        self._events = {'keys': pg.key.get_pressed(), 'mouse': [False, (0, 0)]}
+        self._events = {'delta_time': 0, 'keys': pg.key.get_pressed(), 'mouse': [False, (0, 0)]}
 
         self.functions = {
             '#quit': self.end,
@@ -43,6 +42,8 @@ class GameHandler:
     def events(self):
         _events = pg.event.get()
 
+        self._events['delta_time'] = pg.time.get_ticks() - self.previous
+        self.previous = pg.time.get_ticks()
         self._events['mouse'][1] = pg.mouse.get_pos()
         self._events['keys'] = pg.key.get_pressed()
 
@@ -56,19 +57,19 @@ class GameHandler:
                     self._events['mouse'][0] = False
 
     def update(self):
-        self.delta_time = pg.time.get_ticks() - self.previous
-        self.previous = pg.time.get_ticks()
-
         self.events()
-        _result = self.mode.update(self.delta_time, self._events['keys'], *self._events['mouse'])
+
+        _result = self.mode.update(self._events)
         if _result:
             function = self.functions[_result]
             if type(function) is tuple:
                 function[0](function[1])
             else:
                 function()
+
         elif self._events['keys'][pg.K_ESCAPE]:
             self.end()
+
         elif self._events['keys'][pg.K_q]:
             self.open('start')
 

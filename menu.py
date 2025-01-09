@@ -10,11 +10,11 @@ class Menu:
 
         self.ui = sprite.Group(background, *elements)
 
-    def update(self, _delta_time, _keys, mouse_click, mouse_pos):
+    def update(self, events):
         button_hash = None
         _sprites = self.ui.sprites()
         for spr in _sprites:
-            button_hash = spr.update(mouse_pos, mouse_click)
+            button_hash = spr.update(*events['mouse'])
             if button_hash:
                 break
 

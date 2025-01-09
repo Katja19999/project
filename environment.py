@@ -12,8 +12,7 @@ class Environment(CameraGroup):
         self.cell_size = Constants.cell_size
         self.images = dict(zip([0, 1, 2, 3, 4, 5, 6], sprite_sheet(('game', 'map'), 'tilemap.png', (16, 16), alpha=False)))
 
-        self.levels = [load_level((Constants.data_directory, 'game', 'map'), 'level1.csv'),
-                       load_level((Constants.data_directory, 'game', 'map'), 'level1.csv')]
+        self.levels = [load_level((Constants.data_directory, 'game', 'map'), 'level2.csv')]
         self.level = self.levels[0]
 
     def set_level(self, level):
@@ -40,3 +39,5 @@ class Environment(CameraGroup):
             for col in range(int(_start_h), int(_start_h + _cells_h + 1)):
                 if 0 <= row < len(_level) and 0 <= col < len(_level[0]) and _level[row][col]:
                     surface_blit(_images[_level[row][col]], (col * _size - _dh, row * _size - _dv))
+
+        super().draw(surface)

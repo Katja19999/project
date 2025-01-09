@@ -19,8 +19,16 @@ class CameraGroup(sprite.AbstractGroup):
         super().update(*args, **kwargs)
 
     def draw(self, surface, *args):
-        sprites = self.sprites()
-        dh = self.dh
-        dv = self.dv
+        surface_blit = surface.blit
+        _sprites = self.sprites()
 
-        surface.blits([(spr.image, (spr.rect.topleft[0] - dh, spr.rect.topleft[1] - dv)) for spr in sprites])
+        _dh = self.dh
+        _dv = self.dv
+        _width, _height = Constants.width, Constants.height
+
+        for spr in _sprites:
+            rect = spr.rect
+            pos = rect.topleft
+            if ((rect.left - _dh < _width and rect.right - _dh > 0) and
+                    (rect.top - _dv < _height and rect.bottom - _dv > 0)):
+                surface_blit(spr.image, (pos[0] - _dh, pos[1] - _dv))

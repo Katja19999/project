@@ -18,20 +18,21 @@ class Character(sprite.Sprite):
             'die': State(path, 'die.png', auto_reset=False)
         }
         self.state = 'stand'
+        self.flipped = False
 
         self.position = list(position)
         self.rect = pg.Rect(0, 0, 64, 64)
         self._collision_rect = pg.Rect(0, 0, 32, 32)
         self.set_position(self.position)
 
-        self.speed_h, self.speed_v = speed
+        self.speed = speed
         self.dh, self.dv = 0, 0
 
         self.health = health
 
     @property
     def image(self):
-        return self.states[self.state].image
+        return pg.transform.flip(self.states[self.state].image, self.flipped, False)
 
     def set_position(self, position):
         self.rect.center = position
@@ -43,6 +44,10 @@ class Character(sprite.Sprite):
         elif self.dh == 0 and self.dv == 0:
             self.state = 'stand'
         else:
+            if self.dh < 0:
+                self.flipped = True
+            else:
+                self.flipped = False
             self.state = 'walk'
 
     def control(self, *args, **kwargs):
