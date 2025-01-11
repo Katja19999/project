@@ -33,14 +33,14 @@ class Player(Character):
             self.dv = self.speed
 
         if mouse_click and self.state != 'attack':
-            self.attack(mouse_pos)
+            self.attack()
 
         if self.state in {'attack', 'damage'} and self.states[self.state].end:
             self.update_state()
         elif self.state not in {'attack', 'damage'}:
             self.update_state()
 
-    def attack(self, mouse_pos):
+    def attack(self):
         self.state = 'attack'
         self.states[self.state].start()
 

@@ -4,6 +4,7 @@ import pygame as pg
 
 from constants import Constants
 from menu import Menu
+from ui import start_menu, game, special_keys
 from game import InGameHandler
 
 
@@ -17,13 +18,15 @@ class GameHandler:
         self.display = Constants.display
         self.clock = Constants.clock
         self.fps = Constants.fps
-
         self.previous = pg.time.get_ticks()
 
-        self.modes = {'start': Menu(self, ), 'game': InGameHandler(self), 'end': None}
+        self.modes = {'start': Menu(self, start_menu, special_keys),
+                      'game': InGameHandler(self, game, special_keys),
+                      'end': None}
         self.mode = self.modes['start']
 
         self.events = {'delta_time': 0, 'keys': pg.key.get_pressed(), 'mouse': [False, (0, 0)]}
+        self.functions = {'#exit': self.end, '#quit': (self.open, 'start'), '#play': (self.open, 'game')}
 
     @staticmethod
     def end():
