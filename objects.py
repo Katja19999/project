@@ -26,6 +26,9 @@ class Bullet(sprite.Sprite):
     def set_position(self, position):
         self.rect.center = position
 
+    def hit(self, _obj2):
+        self.kill()
+
     def update(self, delta_time):
         self.position[0] += self.dh
         self.position[1] += self.dv

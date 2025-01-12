@@ -8,10 +8,10 @@ from objects import FireBall
 
 class Player(Character):
 
-    def __init__(self, position, bullet_group, bullet):
+    def __init__(self, position, bullet_groups, bullet):
         super().__init__(('player', ), position, 15, 100)
 
-        self.bullet_group = bullet_group
+        self.bullet_groups = bullet_groups
         self.bullet = bullet
 
     @property
@@ -28,21 +28,26 @@ class Player(Character):
             return
 
         self.dh = self.dv = 0
-        if keys[pg.K_a] or keys[pg.K_LEFT]:
+        if (keys[pg.K_a] or keys[pg.K_LEFT]) and not self.blocked['left']:
             self.dh = -self.speed
             self.flipped = True
-        elif keys[pg.K_d] or keys[pg.K_RIGHT]:
+        elif (keys[pg.K_d] or keys[pg.K_RIGHT]) and not self.blocked['right']:
             self.dh = self.speed
             self.flipped = False
 
-        if keys[pg.K_w] or keys[pg.K_UP]:
+        if (keys[pg.K_w] or keys[pg.K_UP]) and not self.blocked['top']:
             self.dv = -self.speed
-        elif keys[pg.K_s] or keys[pg.K_DOWN]:
+        elif (keys[pg.K_s] or keys[pg.K_DOWN]) and not self.blocked['bottom']:
             self.dv = self.speed
+
+        self.blocked['left'] = False
+        self.blocked['right'] = False
+        self.blocked['top'] = False
+        self.blocked['bottom'] = False
 
         self.flipped = mouse_pos[0] < Constants.width // 2
 
-        if mouse_click[0] and self.state != 'attack':
+        if mouse_click[0] and self.state not in {'attack', 'damage'}:
             self.attack(mouse_pos)
 
         self.update_state()
@@ -51,9 +56,32 @@ class Player(Character):
         self.state = 'attack'
         self.states[self.state].start()
 
-        self.bullet_group.add(self.bullet(self.position,
-                                          m.atan2(mouse_pos[1] - Constants.height // 2,
-                                                  mouse_pos[0] - Constants.width // 2)))
+        for group in self.bullet_groups:
+            group.add(self.bullet(self.position, m.atan2(mouse_pos[1] - Constants.height // 2,
+                                  mouse_pos[0] - Constants.width // 2)))
+
+    def damage(self, damage):
+        self.state = 'damage'
+        self.states[self.state].start()
+        self.health -= damage
+
+    def stop(self, object2):
+        rect1 = self.collision_rect
+        rect2 = object2.collision_rect if hasattr(object2, 'collision_rect') else object2.rect
+        print(rect1.left, rect1.right, rect1.top, rect1.bottom)
+        print(rect2.right, rect2.left, rect2.bottom, rect2.top)
+
+        self.blocked['left'] = rect1.left < rect2.right
+        self.blocked['right'] = rect1.right > rect2.left
+        self.blocked['top'] = rect1.top < rect2.bottom
+        self.blocked['bottom'] = rect1.bottom > rect2.top
+
+    def hit(self, object2):
+        if hasattr(object2, 'damage'):
+            if not isinstance(object2, self.bullet):
+                self.hit(object2.damage)
+        else:
+            self.stop(object2)
 
     def update(self, events, *args):
         self.control(events)

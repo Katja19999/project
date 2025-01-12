@@ -25,11 +25,17 @@ class Character(sprite.Sprite):
 
         self.position = list(position)
         self.rect = pg.Rect(0, 0, 64, 64)
-        self._collision_rect = pg.Rect(0, 0, 32, 32)
+        self.collision_rect = pg.Rect(0, 0, 32, 32)
         self.set_position()
 
         self.speed = speed
         self.dh, self.dv = 0, 0
+        self.blocked = {
+            'left': False,
+            'right': False,
+            'top': False,
+            'bottom': False
+        }
 
         self.health = health
 
@@ -39,7 +45,7 @@ class Character(sprite.Sprite):
 
     def set_position(self):
         self.rect.center = self.position
-        self._collision_rect.center = self.position
+        self.collision_rect.center = self.position
 
     def update_state(self):
         if self.state in {'attack', 'damage'} and not self.states[self.state].end:
@@ -53,6 +59,9 @@ class Character(sprite.Sprite):
             self.state = 'walk'
 
     def control(self, *args, **kwargs):
+        pass
+
+    def hit(self, obj2):
         pass
 
     def update(self, delta_time, *args, **kwargs):
