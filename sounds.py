@@ -11,7 +11,7 @@ def load(path, file):
     # load sound files
 
     try:
-        return mixer.Sound(os.path.join(Constants.sound_path, *path, file))
+        return mixer.Sound(os.path.join(Constants.data_directory, Constants.sound_directory, *path, file))
     except FileNotFoundError or FileExistsError:
         print(f'FILE {file} CAN NOT BE FOUND OR DOES NOT EXIST.')
 

@@ -5,7 +5,7 @@ from timers import Timer
 
 class State:
 
-    def __init__(self, path, animation, sound=None, time=1000, auto_reset=True):
+    def __init__(self, path, animation, sound=None, time=500, auto_reset=True):
 
         self.animation = sprite_sheet(path, animation, (32, 32))
         self.sound = load(path, sound) if sound else None

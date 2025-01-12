@@ -3,12 +3,15 @@ from pygame import sprite
 
 class Menu:
 
-    def __init__(self, handler, elements, special_keys=()):
+    def __init__(self, handler, elements, cursor, special_keys=()):
 
         self.handler = handler
 
         self.ui = sprite.Group(*elements)
+        self.cursor = cursor
         self.special_keys = dict(special_keys)
+
+        self.functions = self.handler.functions
 
     @staticmethod
     def function(function):
@@ -22,15 +25,16 @@ class Menu:
         for spr in _sprites:
             button_hash = spr.update(*events['mouse'])
             if button_hash:
-                self.function(self.handler.functions[button_hash])
+                self.function(self.functions[button_hash])
                 break
+        self.cursor.update(*events['mouse'])
 
     def handle_keys(self, events):
         _keys = events['keys']
         _special_keys = self.special_keys.keys()
         for key in _special_keys:
             if _keys[key]:
-                self.function(self.handler.functions[self.special_keys[key]])
+                self.function(self.functions[self.special_keys[key]])
                 break
 
     def update(self):
@@ -40,3 +44,4 @@ class Menu:
 
     def draw(self, surface):
         self.ui.draw(surface)
+        surface.blit(self.cursor.image, self.cursor.rect)

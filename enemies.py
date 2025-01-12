@@ -10,17 +10,13 @@ class Enemy(Character):
 
 class Enemies(CameraGroup):
 
-    def __init__(self, level, enemies):
+    def __init__(self, level):
         super().__init__()
-        self.start(enemies, level)
+        self.start(level)
 
-    def start(self, enemies, level):
+    def start(self, level):
         _size = Constants.cell_size
-        for _ in range(enemies):
-            x = randint(0, len(level[0]) - 1)
-            y = randint(0, len(level) - 1)
-            while level[y][x] == 0:
-                x = randint(0, len(level[0]) - 1)
-                y = randint(0, len(level) - 1)
-
-            Enemy(('game', 'characters', 'skull'), (x * _size, y * _size), 5, 100).add(self)
+        for y, row in enumerate(level):
+            for x, col in enumerate(row):
+                if col in {3, 5}:
+                    Enemy(('skull', ), ((x + 0.5) * _size, (y + 0.5) * _size), 5, 100).add(self)

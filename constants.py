@@ -27,6 +27,8 @@ class GameConstants:
 
     # files
     data_directory = 'data'
+    image_directory = 'images'
+    sound_directory = 'sounds'
 
 
 Constants = GameConstants()

@@ -20,8 +20,8 @@ class Cursor(pg.sprite.Sprite):
         return self.images[self.state]
 
     def update(self, mouse_click, mouse_pos):
-        self.rect.center = mouse_pos
-        if mouse_click:
+        self.rect.topleft = mouse_pos
+        if mouse_click[0]:
             self.state = 'click'
         else:
             self.state = 'normal'
@@ -68,23 +68,29 @@ class Button(sprite.Sprite):
         if self.rect.collidepoint(mouse_pos):
             self.state = 'hover'
 
-            if mouse_click:
+            if mouse_click[0]:
                 return self.hashcode
         else:
             self.state = 'normal'
 
 
 ui = {
-    'background': Image((0, 0), ('menu',), 'menu.png'),
+    'background': Image((0, 0), (), 'menu.png'),
     'play_button': Button((Constants.width // 2, Constants.height // 2 + 64),
-                          ('menu', 'start'), 'play_button.png', (144, 48),
+                          (), 'play_button.png', (144, 48),
                           '#play'),
     'quit_button': Button((Constants.width // 2, Constants.height // 2 + 192),
-                          ('menu', 'start'), 'quit_button.png', (144, 48),
+                          (), 'quit_button.png', (144, 48),
                           '#exit'),
-    'menu_cursor': Cursor(('menu', 'start'), 'menu_cursor.png'),
-    'game_cursor': Cursor(('game',), 'game_cursor.png'),
+    'pause_button': Button((Constants.width - 48, 0 + 16),
+                           (), 'pause_button.png', (48, 16),
+                           '#pause'),
+    'unpause_button': Button((Constants.width // 2, Constants.height // 2),
+                             (), 'unpause_button.png', (64, 16),
+                             '#unpause'),
+    'menu_cursor': Cursor((), 'menu_cursor.png'),
+    'game_cursor': Cursor((), 'game_cursor.png'),
 }
 special_keys = ((pg.K_ESCAPE, '#exit'), (pg.K_q, '#quit'))
-start_menu = (ui['background'], ui['play_button'], ui['quit_button'], ui['menu_cursor'])
-game = (ui['game_cursor'], )
+start_menu = (ui['background'], ui['play_button'], ui['quit_button'])
+game = (ui['pause_button'], )
