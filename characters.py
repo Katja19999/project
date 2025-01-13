@@ -10,8 +10,10 @@ class Character(sprite.Sprite):
 
     normalize = sqrt(2)
 
-    def __init__(self, path, position, speed, health):
+    def __init__(self, game, path, position, speed, health):
         super().__init__()
+
+        self.game = game
 
         self.states = {
             'stand': State(path, 'stand.png'),
@@ -24,18 +26,12 @@ class Character(sprite.Sprite):
         self.flipped = False
 
         self.position = list(position)
-        self.rect = pg.Rect(0, 0, 64, 64)
-        self.collision_rect = pg.Rect(0, 0, 32, 32)
+        self.render_rect = pg.Rect(0, 0, 64, 64)
+        self.rect = pg.Rect(0, 0, 32, 32)
         self.set_position()
 
         self.speed = speed
         self.dh, self.dv = 0, 0
-        self.blocked = {
-            'left': False,
-            'right': False,
-            'top': False,
-            'bottom': False
-        }
 
         self.health = health
 
@@ -45,7 +41,7 @@ class Character(sprite.Sprite):
 
     def set_position(self):
         self.rect.center = self.position
-        self.collision_rect.center = self.position
+        self.render_rect.center = self.position
 
     def update_state(self):
         if self.state in {'attack', 'damage'} and not self.states[self.state].end:

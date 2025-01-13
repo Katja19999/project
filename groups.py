@@ -27,7 +27,7 @@ class CameraGroup(sprite.AbstractGroup):
         _width, _height = Constants.width, Constants.height
 
         for spr in _sprites:
-            rect = spr.rect
+            rect = spr.render_rect
             pos = rect.topleft
             if ((rect.left - _dh < _width and rect.right - _dh > 0) and
                     (rect.top - _dv < _height and rect.bottom - _dv > 0)):

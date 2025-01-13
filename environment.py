@@ -11,7 +11,7 @@ class Wall(sprite.Sprite):
         super().__init__()
 
         self.image = image
-        self.rect = self.image.get_rect(topleft=position)
+        self.render_rect = self.rect = self.image.get_rect(topleft=position)
 
 
 class Box(sprite.Sprite):
@@ -20,7 +20,7 @@ class Box(sprite.Sprite):
         super().__init__()
 
         self.image = image
-        self.rect = self.image.get_rect(topleft=position)
+        self.render_rect = self.rect = self.image.get_rect(topleft=position)
 
         self.health = health
 
@@ -30,7 +30,7 @@ class Box(sprite.Sprite):
     def update(self):
         if self.health <= 0:
             if self.attribute:
-                self.objects_group.add(self.attribute(self.rect.topleft))
+                self.objects_group.add(self.attribute(self.render_rect.topleft))
             self.kill()
 
 
