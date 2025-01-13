@@ -18,16 +18,13 @@ class Bullet(sprite.Sprite):
         self.dv = m.sin(angle) * speed
 
         self.position = list(position)
-        self.render_rect = self.image.get_rect(center=self.position)
+        self.render_rect = self.rect = self.image.get_rect(center=self.position)
 
         self.damage = damage
         self.death_timer = Timer(500, auto_reset=False)
 
     def set_position(self, position):
         self.render_rect.center = position
-
-    def hit(self, _obj2):
-        self.kill()
 
     def update(self, delta_time):
         self.position[0] += self.dh
@@ -42,7 +39,7 @@ class Bullet(sprite.Sprite):
 class FireBall(Bullet):
 
     def __init__(self, position, angle):
-        super().__init__(position, (), 'fireball.png', angle, 12, 40)
+        super().__init__(position, (), 'fireball.png', angle, 12, 50)
 
 
 class ObjectGroup(CameraGroup):

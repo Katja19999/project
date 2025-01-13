@@ -39,7 +39,7 @@ class InGameHandler(Menu):
             _position = self.player.pos
 
             self.environment.update(_position)
-            self.enemies.update(_position, _events['delta_time'])
+            self.enemies.update(_position, _events)
             self.objects.update(_position, _events['delta_time'])
 
     def draw(self, surface):

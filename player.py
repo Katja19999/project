@@ -17,16 +17,8 @@ class Player(Character):
     def pos(self):
         return self.position
 
-    def control(self, events):
+    def update_movement(self, events):
         keys = events['keys']
-        mouse_click, mouse_pos = events['mouse']
-
-        if self.state == 'die':
-            if self.states[self.state].end:
-                self.kill()
-            return
-
-        _walls = self.game.environment
 
         self.dh = self.dv = 0
         if keys[pg.K_a] or keys[pg.K_LEFT]:
@@ -36,45 +28,48 @@ class Player(Character):
             self.dh = self.speed
             self.flipped = False
 
-        if self.dh != 0:
-            self.rect.x += self.dh
-            if pg.sprite.spritecollide(self, _walls, False):
-                self.dh = 0
-            self.rect.x -= self.dh
-
         if keys[pg.K_w] or keys[pg.K_UP]:
             self.dv = -self.speed
         if keys[pg.K_s] or keys[pg.K_DOWN]:
             self.dv = self.speed
 
-        if self.dv != 0:
-            self.rect.y += self.dv
-            if pg.sprite.spritecollide(self, _walls, False):
-                self.dv = 0
-            self.rect.y -= self.dv
+        _move_x = self.dh * events['delta_time'] / 100
+        _move_y = self.dv * events['delta_time'] / 100
 
-        self.flipped = mouse_pos[0] < Constants.width // 2
+        _walls = self.game.environment
 
-        if mouse_click[0] and self.state not in {'attack', 'damage'}:
-            self.attack(mouse_pos)
+        self.rect.x += _move_x
+        if pg.sprite.spritecollideany(self, _walls):
+            self.rect.x -= _move_x
+            _move_x = 0
 
-        self.update_state()
+        self.rect.y += _move_y
+        if pg.sprite.spritecollideany(self, _walls):
+            self.rect.y -= _move_y
+            _move_y = 0
+
+        if _move_x != 0 and _move_y != 0:
+            _move_x /= self.normalize
+            _move_y /= self.normalize
+
+        self.position[0] += _move_x
+        self.position[1] += _move_y
+
+        self.set_position()
+
+    def update_state(self, events=None, *args):
+        self.flipped = events['mouse'][1][0] < Constants.width // 2
+        if events['mouse'][0][0]:
+            self.attack(events['mouse'][1])
+        super().update_state()
 
     def attack(self, mouse_pos):
-        self.state = 'attack'
-        self.states[self.state].start()
+        if self.state not in {'attack', 'damage'}:
+            self.state = 'attack'
+            self.states[self.state].start()
 
-        self.game.objects.add(self.bullet(self.position, m.atan2(mouse_pos[1] - Constants.height // 2,
-                                          mouse_pos[0] - Constants.width // 2)))
-
-    def damage(self, damage):
-        self.state = 'damage'
-        self.states[self.state].start()
-        self.health -= damage
-
-    def update(self, events, *args):
-        self.control(events)
-        super().update(events['delta_time'])
+            self.game.objects.add(self.bullet(self.position, m.atan2(mouse_pos[1] - Constants.height // 2,
+                                              mouse_pos[0] - Constants.width // 2)))
 
 
 class PlayerGroup(pg.sprite.GroupSingle):

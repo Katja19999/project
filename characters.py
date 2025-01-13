@@ -1,8 +1,6 @@
 import pygame as pg
-
 from pygame import sprite
 from math import sqrt
-
 from states import State
 
 
@@ -12,27 +10,21 @@ class Character(sprite.Sprite):
 
     def __init__(self, game, path, position, speed, health):
         super().__init__()
-
         self.game = game
-
         self.states = {
             'stand': State(path, 'stand.png'),
             'walk': State(path, 'walk.png'),
             'attack': State(path, 'attack.png', auto_reset=False),
             'damage': State(path, 'damage.png', auto_reset=False),
-            'die': State(path, 'die.png', auto_reset=False)
         }
         self.state = 'stand'
         self.flipped = False
-
         self.position = list(position)
         self.render_rect = pg.Rect(0, 0, 64, 64)
         self.rect = pg.Rect(0, 0, 32, 32)
         self.set_position()
-
         self.speed = speed
         self.dh, self.dv = 0, 0
-
         self.health = health
 
     @property
@@ -43,31 +35,27 @@ class Character(sprite.Sprite):
         self.rect.center = self.position
         self.render_rect.center = self.position
 
-    def update_state(self):
-        if self.state in {'attack', 'damage'} and not self.states[self.state].end:
+    def update_state(self, *args):
+        if self.health <= 0:
+            self.kill()
             return
 
-        if self.health <= 0:
-            self.state = 'die'
-        elif self.dh == 0 and self.dv == 0:
-            self.state = 'stand'
-        else:
-            self.state = 'walk'
-
-    def control(self, *args, **kwargs):
-        pass
-
-    def hit(self, obj2):
-        pass
-
-    def update(self, delta_time, *args, **kwargs):
         self.states[self.state].update()
 
-        if self.dh != 0 and self.dv != 0:
-            self.dh /= self.normalize
-            self.dv /= self.normalize
+        if self.state in {'damage', 'attack'} and not self.states[self.state].end:
+            return
 
-        self.position[0] += self.dh * delta_time / 100
-        self.position[1] += self.dv * delta_time / 100
+        self.state = 'stand' if self.dh == self.dv == 0 else 'walk'
 
-        self.set_position()
+    def update_movement(self, *args, **kwargs):
+        pass
+
+    def hit(self, damage):
+        self.health -= damage
+        if self.state != 'damage':
+            self.state = 'damage'
+            self.states[self.state].start()
+
+    def update(self, events, *args, **kwargs):
+        self.update_movement(events)
+        self.update_state(events)
