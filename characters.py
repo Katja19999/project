@@ -35,7 +35,7 @@ class Character(sprite.Sprite):
         self.rect.center = self.position
         self.render_rect.center = self.position
 
-    def update_state(self, *args):
+    def update_state(self, *args, **kwargs):
         if self.health <= 0:
             self.kill()
             return
@@ -55,7 +55,3 @@ class Character(sprite.Sprite):
         if self.state != 'damage':
             self.state = 'damage'
             self.states[self.state].start()
-
-    def update(self, events, *args, **kwargs):
-        self.update_movement(events)
-        self.update_state(events)

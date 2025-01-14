@@ -27,7 +27,11 @@ class Box(sprite.Sprite):
         self.objects_group = objects_group
         self.attribute = attributes
 
-    def update(self):
+    def update(self, bullets):
+        _collided = sprite.spritecollide(self, bullets, False)
+        for spr in _collided:
+            self.health -= spr.damage
+            spr.kill()
         if self.health <= 0:
             if self.attribute:
                 self.objects_group.add(self.attribute(self.render_rect.topleft))
@@ -54,12 +58,14 @@ class Environment(CameraGroup):
         self.cell_size = Constants.cell_size
         _images = sprite_sheet((), 'tilemap.png', (16, 16), alpha=False)
         self.images = dict(zip(range(len(_images)), _images))
-        self.objects = {
+        self.walls = {
             0: (Wall, _images[0]),
             1: (Wall, _images[1]),
             6: (Wall, _images[6]),
+        }
+        self.boxes = {
             7: (Vase, _images[7]),
-            8: (Vase, _images[8]),
+            8: (Chest, _images[8]),
         }
 
         self.levels = [load_level((Constants.data_directory, 'levels'), 'level1.csv')]
@@ -70,8 +76,11 @@ class Environment(CameraGroup):
         _size = Constants.cell_size
         for y, row in enumerate(level):
             for x, col in enumerate(row):
-                if col in self.objects.keys():
-                    obj = self.objects[col]
+                if col in self.walls.keys():
+                    obj = self.walls[col]
+                    obj[0]((x * _size, y * _size), obj[1]).add(self)
+                elif col in self.boxes.keys():
+                    obj = self.boxes[col]
                     obj[0]((x * _size, y * _size), obj[1]).add(self)
 
     def set_level(self, level):
@@ -97,6 +106,9 @@ class Environment(CameraGroup):
         for row in range(int(_start_v), int(_start_v + _cells_v + 1)):
             for col in range(int(_start_h), int(_start_h + _cells_h + 1)):
                 if 0 <= row < len(_level) and 0 <= col < len(_level[0]) and _level[row][col]:
-                    surface_blit(_images[_level[row][col]], (col * _size - _dh, row * _size - _dv))
+                    if _level[row][col] in self.boxes:
+                        surface_blit(_images[2], (col * _size - _dh, row * _size - _dv))
+                    elif _level[row][col] not in self.walls:
+                        surface_blit(_images[_level[row][col]], (col * _size - _dh, row * _size - _dv))
 
         super().draw(surface)

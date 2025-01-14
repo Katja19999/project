@@ -53,8 +53,9 @@ class HealthBar(sprite.Sprite):
         pos = self.rect.bottom
         self.rect.height = self.height * (health[0] / max_health)
         self.rect.bottom = pos
-        self.image = pg.Surface(self.rect.size)
-        self.image.fill(self.color)
+        if self.rect.height > 0:
+            self.image = pg.Surface(self.rect.size)
+            self.image.fill(self.color)
 
 
 class Text(sprite.Sprite):

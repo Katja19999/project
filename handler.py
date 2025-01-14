@@ -18,7 +18,6 @@ class GameHandler:
         self.display = Constants.display
         self.clock = Constants.clock
         self.fps = Constants.fps
-        self.previous = pg.time.get_ticks()
 
         self.events = {'delta_time': 0,
                        'keys': pg.key.get_pressed(),
@@ -44,8 +43,7 @@ class GameHandler:
     def handle_events(self):
         pg.event.clear()
 
-        self.events['delta_time'] = pg.time.get_ticks() - self.previous
-        self.previous = pg.time.get_ticks()
+        self.events['delta_time'] = self.clock.tick_busy_loop(self.fps) / 100
         self.events['mouse'] = (pg.mouse.get_pressed(), pg.mouse.get_pos())
         self.events['keys'] = pg.key.get_pressed()
 
@@ -62,5 +60,3 @@ class GameHandler:
         while True:
             self.update()
             self.draw()
-
-            self.clock.tick_busy_loop(self.fps)

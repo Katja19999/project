@@ -9,7 +9,7 @@ from objects import FireBall
 class Player(Character):
 
     def __init__(self, game, position, bullet):
-        super().__init__(game, ('player', ), position, 15, 100)
+        super().__init__(game, ('player', ), position, 15, 150)
 
         self.bullet = bullet
 
@@ -17,7 +17,7 @@ class Player(Character):
     def pos(self):
         return self.position
 
-    def update_movement(self, events):
+    def update_movement(self, events, walls):
         keys = events['keys']
 
         self.dh = self.dv = 0
@@ -33,18 +33,16 @@ class Player(Character):
         if keys[pg.K_s] or keys[pg.K_DOWN]:
             self.dv = self.speed
 
-        _move_x = self.dh * events['delta_time'] / 100
-        _move_y = self.dv * events['delta_time'] / 100
-
-        _walls = self.game.environment
+        _move_x = self.dh * events['delta_time']
+        _move_y = self.dv * events['delta_time']
 
         self.rect.x += _move_x
-        if pg.sprite.spritecollideany(self, _walls):
+        if pg.sprite.spritecollideany(self, walls):
             self.rect.x -= _move_x
             _move_x = 0
 
         self.rect.y += _move_y
-        if pg.sprite.spritecollideany(self, _walls):
+        if pg.sprite.spritecollideany(self, walls):
             self.rect.y -= _move_y
             _move_y = 0
 
@@ -57,7 +55,7 @@ class Player(Character):
 
         self.set_position()
 
-    def update_state(self, events=None, *args):
+    def update_state(self, events):
         self.flipped = events['mouse'][1][0] < Constants.width // 2
         if events['mouse'][0][0]:
             self.attack(events['mouse'][1])
@@ -70,6 +68,10 @@ class Player(Character):
 
             self.game.objects.add(self.bullet(self.position, m.atan2(mouse_pos[1] - Constants.height // 2,
                                               mouse_pos[0] - Constants.width // 2)))
+
+    def update(self, events, walls):
+        self.update_movement(events, walls)
+        self.update_state(events)
 
 
 class PlayerGroup(pg.sprite.GroupSingle):

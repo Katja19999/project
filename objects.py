@@ -26,9 +26,9 @@ class Bullet(sprite.Sprite):
     def set_position(self, position):
         self.render_rect.center = position
 
-    def update(self, delta_time):
-        self.position[0] += self.dh
-        self.position[1] += self.dv
+    def update(self, events):
+        self.position[0] += self.dh * events['delta_time']
+        self.position[1] += self.dv * events['delta_time']
 
         self.set_position(self.position)
 
@@ -39,7 +39,7 @@ class Bullet(sprite.Sprite):
 class FireBall(Bullet):
 
     def __init__(self, position, angle):
-        super().__init__(position, (), 'fireball.png', angle, 15, 50)
+        super().__init__(position, (), 'fireball.png', angle, 150, 50)
 
 
 class ObjectGroup(CameraGroup):

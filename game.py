@@ -35,17 +35,17 @@ class InGameHandler(Menu):
         self.handle_keys(_events)
 
         if not self.paused:
-            self.player.update(_events)
+            self.player.update(_events, self.environment)
             _position = self.player.pos
 
-            self.environment.update(_position)
-            self.enemies.update(_position, _events)
-            self.objects.update(_position, _events['delta_time'])
+            self.environment.update(_position, self.objects)
+            self.enemies.update(_position, _events, self.player, self.objects)
+            self.objects.update(_position, _events)
 
     def draw(self, surface):
         self.environment.draw(surface)
-        self.enemies.draw(surface)
         self.player.draw(surface)
+        self.enemies.draw(surface)
         self.objects.draw(surface)
 
         super().draw(surface)
