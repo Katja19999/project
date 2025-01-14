@@ -39,7 +39,7 @@ class Bullet(sprite.Sprite):
 class FireBall(Bullet):
 
     def __init__(self, position, angle):
-        super().__init__(position, (), 'fireball.png', angle, 12, 50)
+        super().__init__(position, (), 'fireball.png', angle, 15, 50)
 
 
 class ObjectGroup(CameraGroup):

@@ -54,4 +54,4 @@ class Enemies(CameraGroup):
         for y, row in enumerate(level):
             for x, col in enumerate(row):
                 if col in {3, 5}:
-                    Enemy(self.game, ('skull', ), ((x + 0.5) * cell_size, (y + 0.5) * cell_size), 5, 100).add(self)
+                    Enemy(self.game, ('skull', ), ((x + 0.5) * cell_size, (y + 0.5) * cell_size), 7.5, 150).add(self)

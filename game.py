@@ -31,7 +31,7 @@ class InGameHandler(Menu):
 
     def update(self):
         _events = self.handler.events
-        self.handle_buttons(_events)
+        self.handle_buttons(_events, self.player.health)
         self.handle_keys(_events)
 
         if not self.paused:

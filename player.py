@@ -91,6 +91,11 @@ class PlayerGroup(pg.sprite.GroupSingle):
     def pos(self):
         return self.sprite.pos
 
+    @property
+    def health(self):
+        print(self.sprite.health)
+        return self.sprite.health
+
     def draw(self, surface, *args):
         sprite = self.sprite
         center_h, center_v = Constants.absolute_center
