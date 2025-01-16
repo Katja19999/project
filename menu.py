@@ -20,10 +20,10 @@ class Menu:
         else:
             function()
 
-    def handle_buttons(self, events):
+    def handle_buttons(self, events, *args):
         _sprites = self.ui.sprites()
         for spr in _sprites:
-            button_hash = spr.update(*events['mouse'])
+            button_hash = spr.update(*events['mouse'], args)
             if button_hash:
                 self.function(self.functions[button_hash])
                 break

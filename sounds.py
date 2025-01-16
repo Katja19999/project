@@ -1,4 +1,4 @@
-import os as os
+import os
 import sys as sys
 
 import pygame as pg

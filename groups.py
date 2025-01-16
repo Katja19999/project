@@ -5,7 +5,6 @@ from constants import Constants
 
 # Group that manages "camera"
 class CameraGroup(sprite.AbstractGroup):
-
     aph, apv = Constants.absolute_center
     dh = 0
     dv = 0

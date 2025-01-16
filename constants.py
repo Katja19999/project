@@ -2,7 +2,6 @@ import pygame as pg
 
 
 class GameConstants:
-
     pg.mixer.init()
     pg.init()
     pg.event.set_allowed([pg.MOUSEBUTTONDOWN, pg.MOUSEBUTTONUP, pg.KEYDOWN, pg.KEYUP])

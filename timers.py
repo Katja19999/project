@@ -5,7 +5,6 @@ class Timer:
     # manage time
 
     def __init__(self, time, auto_reset=True):
-
         self.time = time
         self.prev = get_ticks()
 

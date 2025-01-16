@@ -36,6 +36,28 @@ class Image(sprite.Sprite):
         self.rect = self.image.get_rect(topleft=position)
 
 
+class HealthBar(sprite.Sprite):
+
+    def __init__(self, position, size, color):
+        super().__init__()
+
+        self.rect = pg.Rect(0, 0, *size)
+        self.rect.center = position
+        self.height = size[1]
+
+        self.color = color
+        self.image = pg.Surface(self.rect.size)
+        self.image.fill(self.color)
+
+    def update(self, _mouse_click, _mouse_pos, health, max_health=200):
+        pos = self.rect.bottom
+        self.rect.height = self.height * (health[0] / max_health)
+        self.rect.bottom = pos
+        if self.rect.height > 0:
+            self.image = pg.Surface(self.rect.size)
+            self.image.fill(self.color)
+
+
 class Text(sprite.Sprite):
 
     def __init__(self, group, position, text, size):
@@ -64,7 +86,7 @@ class Button(sprite.Sprite):
     def image(self):
         return self.images[self.state]
 
-    def update(self, mouse_click, mouse_pos):
+    def update(self, mouse_click, mouse_pos, *args):
         if self.rect.collidepoint(mouse_pos):
             self.state = 'hover'
 
@@ -82,15 +104,18 @@ ui = {
     'quit_button': Button((Constants.width // 2, Constants.height // 2 + 192),
                           (), 'quit_button.png', (144, 48),
                           '#exit'),
-    'pause_button': Button((Constants.width - 48, 0 + 16),
-                           (), 'pause_button.png', (48, 16),
+    'pause_button': Button((Constants.width - 96, 0 + 32),
+                           (), 'pause_button.png', (96, 32),
                            '#pause'),
     'unpause_button': Button((Constants.width // 2, Constants.height // 2),
-                             (), 'unpause_button.png', (64, 16),
+                             (), 'unpause_button.png', (128, 32),
                              '#unpause'),
     'menu_cursor': Cursor((), 'menu_cursor.png'),
     'game_cursor': Cursor((), 'game_cursor.png'),
+
+    'game_ui': Image((0, 0), (), 'ui.png', True),
+    'health_bar': HealthBar((32, 80), (32, 256), '#cb3129')
 }
 special_keys = ((pg.K_ESCAPE, '#exit'), (pg.K_q, '#quit'))
 start_menu = (ui['background'], ui['play_button'], ui['quit_button'])
-game = (ui['pause_button'], )
+game = (ui['pause_button'], ui['health_bar'], ui['game_ui'])
