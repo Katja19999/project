@@ -1,15 +1,16 @@
 import math as m
 
 import pygame as pg
-from constants import Constants
+
 from characters import Character
+from constants import Constants
 from objects import FireBall
 
 
 class Player(Character):
 
     def __init__(self, game, position, bullet):
-        super().__init__(game, ('player', ), position, 15, 150)
+        super().__init__(game, ('player',), position, 15, 150)
 
         self.bullet = bullet
 
@@ -67,7 +68,7 @@ class Player(Character):
             self.states[self.state].start()
 
             self.game.objects.add(self.bullet(self.position, m.atan2(mouse_pos[1] - Constants.height // 2,
-                                              mouse_pos[0] - Constants.width // 2)))
+                                                                     mouse_pos[0] - Constants.width // 2)))
 
     def update(self, events, walls):
         self.update_movement(events, walls)

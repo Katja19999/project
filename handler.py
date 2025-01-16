@@ -1,20 +1,19 @@
-import sys as sys
 import os
+import sys as sys
+
 import pygame as pg
 
 from constants import Constants
+from game import InGameHandler
 from menu import Menu
 from ui import ui, start_menu, game, special_keys
-from game import InGameHandler
 
 
 class GameHandler:
-
     pg.mixer.music.load(os.path.join(Constants.data_directory, Constants.sound_directory, 'music.mp3'))
     pg.mixer.music.play()
 
     def __init__(self):
-
         self.display = Constants.display
         self.clock = Constants.clock
         self.fps = Constants.fps

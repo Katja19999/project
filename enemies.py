@@ -1,8 +1,9 @@
-import pygame as pg
 import math as m
 
-from constants import Constants
+import pygame as pg
+
 from characters import Character
+from constants import Constants
 from groups import CameraGroup
 
 
@@ -54,4 +55,4 @@ class Enemies(CameraGroup):
         for y, row in enumerate(level):
             for x, col in enumerate(row):
                 if col in {3, 5}:
-                    Enemy(self.game, ('skull', ), ((x + 0.5) * cell_size, (y + 0.5) * cell_size), 7.5, 150).add(self)
+                    Enemy(self.game, ('skull',), ((x + 0.5) * cell_size, (y + 0.5) * cell_size), 7.5, 150).add(self)

@@ -2,9 +2,9 @@ import math as m
 
 from pygame import sprite
 
+from groups import CameraGroup
 from images import load
 from timers import Timer
-from groups import CameraGroup
 
 
 class Bullet(sprite.Sprite):

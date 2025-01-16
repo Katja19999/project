@@ -1,11 +1,12 @@
+from math import sqrt
+
 import pygame as pg
 from pygame import sprite
-from math import sqrt
+
 from states import State
 
 
 class Character(sprite.Sprite):
-
     normalize = sqrt(2)
 
     def __init__(self, game, path, position, speed, health):

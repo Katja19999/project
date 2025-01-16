@@ -1,9 +1,10 @@
 from pygame import sprite
-from environment import Environment
+
 from enemies import Enemies
-from player import PlayerGroup
-from objects import ObjectGroup
+from environment import Environment
 from menu import Menu
+from objects import ObjectGroup
+from player import PlayerGroup
 from ui import ui
 
 
