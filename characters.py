@@ -15,8 +15,8 @@ class Character(sprite.Sprite):
         self.states = {
             'stand': State(path, 'stand.png'),
             'walk': State(path, 'walk.png'),
-            'attack': State(path, 'attack.png', auto_reset=False),
-            'damage': State(path, 'damage.png', auto_reset=False),
+            'attack': State(path, 'attack.png', 'attack.wav', auto_reset=False),
+            'damage': State(path, 'damage.png', 'damage.wav', auto_reset=False),
         }
         self.state = 'stand'
         self.flipped = False
