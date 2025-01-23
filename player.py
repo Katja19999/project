@@ -5,6 +5,7 @@ import pygame as pg
 from characters import Character
 from constants import Constants
 from objects import FireBall
+from environment import Wall, Exit
 
 
 class Player(Character):
@@ -38,14 +39,24 @@ class Player(Character):
         _move_y = self.dv * events['delta_time']
 
         self.rect.x += _move_x
-        if pg.sprite.spritecollideany(self, walls):
-            self.rect.x -= _move_x
-            _move_x = 0
+        _collided = pg.sprite.spritecollide(self, walls, False)
+        if _collided:
+            for spr in _collided:
+                if isinstance(spr, Wall) and _move_x:
+                    self.rect.x -= _move_x
+                    _move_x = 0
+                elif isinstance(spr, Exit):
+                    self.game.new_level()
 
         self.rect.y += _move_y
-        if pg.sprite.spritecollideany(self, walls):
-            self.rect.y -= _move_y
-            _move_y = 0
+        _collided = pg.sprite.spritecollide(self, walls, False)
+        if _collided:
+            for spr in _collided:
+                if isinstance(spr, Wall) and _move_y:
+                    self.rect.y -= _move_y
+                    _move_y = 0
+                elif isinstance(spr, Exit):
+                    self.game.new_level()
 
         if _move_x != 0 and _move_y != 0:
             _move_x /= self.normalize
@@ -90,13 +101,17 @@ class PlayerGroup(pg.sprite.GroupSingle):
                     Player(self.game, ((x + 0.5) * _size, (y + 0.5) * _size), FireBall).add(self)
                     break
 
+    def update(self, *args, **kwargs):
+        super().update(*args, **kwargs)
+        if self.sprite.health <= 0:
+            self.game.function(self.game.functions['#end'])
+
     @property
     def pos(self):
         return self.sprite.pos
 
     @property
     def health(self):
-        print(self.sprite.health)
         return self.sprite.health
 
     def draw(self, surface, *args):

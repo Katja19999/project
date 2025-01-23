@@ -13,6 +13,9 @@ class Menu:
 
         self.functions = self.handler.functions
 
+    def start(self):
+        pass
+
     @staticmethod
     def function(function):
         if isinstance(function, tuple):

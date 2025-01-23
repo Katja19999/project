@@ -29,7 +29,8 @@ class State:
         self.frame = 0
 
     def start(self):
-        self.reset()
+        if self.end:
+            self.reset()
         if self.sound:
             self.sound.play()
 

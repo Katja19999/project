@@ -37,13 +37,9 @@ class Character(sprite.Sprite):
         self.render_rect.center = self.position
 
     def update_state(self, *args, **kwargs):
-        if self.health <= 0:
-            self.kill()
-            return
-
         self.states[self.state].update()
 
-        if self.state in {'damage', 'attack'} and not self.states[self.state].end:
+        if (self.state in {'damage', 'attack'} and not self.states[self.state].end) or self.health <= 0:
             return
 
         self.state = 'stand' if self.dh == self.dv == 0 else 'walk'
@@ -53,6 +49,5 @@ class Character(sprite.Sprite):
 
     def hit(self, damage):
         self.health -= damage
-        if self.state != 'damage':
-            self.state = 'damage'
-            self.states[self.state].start()
+        self.state = 'damage'
+        self.states[self.state].start()

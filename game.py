@@ -1,5 +1,3 @@
-from pygame import sprite
-
 from enemies import Enemies
 from environment import Environment
 from menu import Menu
@@ -14,13 +12,18 @@ class InGameHandler(Menu):
         super().__init__(handler, elements, cursor, special_keys)
         self.functions.update({'#pause': self.pause, '#unpause': self.unpause})
 
-        self.all_sprites = sprite.Group()
         self.environment = Environment()
         self.enemies = Enemies(self)
         self.objects = ObjectGroup()
         self.player = PlayerGroup(self)
 
         self.paused = False
+
+    def start(self):
+        self.environment = Environment()
+        self.enemies = Enemies(self)
+        self.objects = ObjectGroup()
+        self.player = PlayerGroup(self)
 
     def pause(self):
         self.ui.add(ui['unpause_button'])
@@ -29,6 +32,9 @@ class InGameHandler(Menu):
     def unpause(self):
         self.ui.remove(ui['unpause_button'])
         self.paused = False
+
+    def new_level(self):
+        self.environment.new_level()
 
     def update(self):
         _events = self.handler.events

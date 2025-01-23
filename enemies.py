@@ -33,8 +33,12 @@ class Enemy(Character):
 
         _collided = pg.sprite.spritecollide(self, bullets, False)
         for spr in _collided:
-            self.hit(spr.damage)
-            spr.kill()
+            if hasattr(spr, 'damage'):
+                self.hit(spr.damage)
+                spr.kill()
+
+        if self.health <= 0:
+            self.kill()
 
         super().update_state()
 
