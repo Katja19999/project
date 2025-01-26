@@ -60,8 +60,8 @@ class HealthBar(sprite.Sprite):
 
 class Text(sprite.Sprite):
 
-    def __init__(self, group, position, text, size):
-        super().__init__(group)
+    def __init__(self, position, text, size):
+        super().__init__()
 
         self.text = text
         self.font = pg.font.SysFont(self.text, size)
@@ -103,12 +103,15 @@ ui = {
     'restart_button': Button((Constants.width // 2, Constants.height // 2 + 64),
                              (), 'restart_button.png', (192, 48),
                              '#play'),
-    'play_button': Button((Constants.width // 2, Constants.height // 2 + 64),
+    'play_button': Button((Constants.width // 2, Constants.height // 2 + 48),
                           (), 'play_button.png', (144, 48),
                           '#play'),
-    'quit_button': Button((Constants.width // 2, Constants.height // 2 + 192),
+    'quit_button': Button((Constants.width // 2, Constants.height // 2 + 160),
                           (), 'quit_button.png', (144, 48),
                           '#exit'),
+    'result_button': Button((Constants.width // 2, Constants.height // 2 + 272),
+                            (), 'result_button.png', (192, 48),
+                            '#result'),
     'pause_button': Button((Constants.width - 96, 0 + 32),
                            (), 'pause_button.png', (96, 32),
                            '#pause'),
@@ -122,6 +125,6 @@ ui = {
     'health_bar': HealthBar((32, 80), (32, 256), '#cb3129')
 }
 special_keys = ((pg.K_ESCAPE, '#exit'), (pg.K_q, '#quit'))
-start_menu = (ui['start_background'], ui['play_button'], ui['quit_button'])
+start_menu = (ui['start_background'], ui['play_button'], ui['quit_button'], ui['result_button'])
 game = (ui['pause_button'], ui['health_bar'], ui['game_ui'])
 end_menu = (ui['end_background'], ui['quit_button'], ui['restart_button'])

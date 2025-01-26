@@ -5,6 +5,7 @@ import pygame as pg
 
 from constants import Constants
 from game import InGameHandler
+from results import ResultMenu
 from menu import Menu
 from ui import ui, start_menu, game, end_menu, special_keys
 
@@ -25,11 +26,12 @@ class GameHandler:
         self.functions = {'#exit': self.end,
                           '#quit': (self.open, 'start'),
                           '#play': (self.open, 'game'),
-                          '#end': (self.open, 'end')
-                          }
+                          '#end': (self.open, 'end'),
+                          '#result': (self.open, 'result')}
 
         self.modes = {'start': Menu(self, start_menu, ui['menu_cursor'], special_keys),
                       'game': InGameHandler(self, game, ui['game_cursor'], special_keys),
+                      'result': ResultMenu(self, (), ui['menu_cursor'], special_keys),
                       'end': Menu(self, end_menu, ui['menu_cursor'], special_keys)}
 
         self.mode = self.modes['start']
@@ -41,6 +43,7 @@ class GameHandler:
 
     def open(self, mode):
         self.mode = self.modes[mode]
+        print(self.mode)
         self.mode.start()
 
     def handle_events(self):
