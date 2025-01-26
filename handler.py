@@ -5,7 +5,7 @@ import pygame as pg
 
 from constants import Constants
 from game import InGameHandler
-from results import ResultMenu
+from resultmenu import ResultMenu
 from menu import Menu
 from ui import ui, start_menu, game, end_menu, special_keys
 
@@ -43,7 +43,6 @@ class GameHandler:
 
     def open(self, mode):
         self.mode = self.modes[mode]
-        print(self.mode)
         self.mode.start()
 
     def handle_events(self):

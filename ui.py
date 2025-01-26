@@ -100,7 +100,7 @@ ui = {
     'start_background': Image((0, 0), (), 'menu.png'),
     'end_background': Image((0, 0), (), 'game_over.png'),
     'pause_text': Image((Constants.width // 2 - 160, Constants.height // 2 - 96), (), 'pause_image.png', True),
-    'restart_button': Button((Constants.width // 2, Constants.height // 2 + 64),
+    'restart_button': Button((Constants.width // 2, Constants.height // 2 + 48),
                              (), 'restart_button.png', (192, 48),
                              '#play'),
     'play_button': Button((Constants.width // 2, Constants.height // 2 + 48),

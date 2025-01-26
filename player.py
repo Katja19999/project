@@ -110,7 +110,7 @@ class PlayerGroup(pg.sprite.GroupSingle):
     def update(self, *args, **kwargs):
         super().update(*args, **kwargs)
         if self.sprite.health <= 0:
-            self.game.function(self.game.functions['#end'])
+            self.game.end()
 
     @property
     def pos(self):

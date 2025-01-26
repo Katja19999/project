@@ -3,6 +3,8 @@ from environment import Environment
 from menu import Menu
 from objects import ObjectGroup
 from player import PlayerGroup
+from results import Result
+from database import write_result
 from ui import ui
 
 
@@ -16,6 +18,7 @@ class InGameHandler(Menu):
         self.enemies = Enemies(self)
         self.objects = ObjectGroup()
         self.player = PlayerGroup(self)
+        self.stats = Result()
 
         self.paused = False
 
@@ -39,7 +42,12 @@ class InGameHandler(Menu):
             self.player.new_level()
             self.enemies.new_level()
         else:
-            self.function(self.functions['#end'])
+            self.end()
+
+    def end(self):
+        print(self.stats.get('enemies killed'))
+        write_result(self.stats.get('enemies killed'))
+        self.function(self.functions['#end'])
 
     def update(self):
         _events = self.handler.events

@@ -38,6 +38,7 @@ class Enemy(Character):
                 spr.kill()
 
         if self.health <= 0:
+            self.game.stats.update('enemies killed', 1)
             self.kill()
 
         super().update_state()

@@ -1,23 +1,11 @@
-from database import get_result
-from ui import Text
-from menu import Menu
-from constants import Constants
+class Result:
 
+    def __init__(self, stats=('enemies killed', )):
 
-class ResultMenu(Menu):
+        self.statistics = dict(zip(stats, [0] * len(stats)))
 
-    def __init__(self, handler, elements, cursor, special_keys=()):
-        super().__init__(handler, elements, cursor, special_keys)
+    def get(self, item):
+        return str(self.statistics[item])
 
-        self.text = None
-
-    def start(self):
-        self.text = Text((0, 0), f'{get_result()}% best so far.', 64)
-        self.text.rect.topleft = ((Constants.width - self.text.rect.width) // 2,
-                                  (Constants.height - self.text.rect.height) // 2)
-
-    def draw(self, surface):
-        surface.fill('#12051b')
-        self.ui.draw(surface)
-        surface.blit(self.text.image, self.text.rect)
-        surface.blit(self.cursor.image, self.cursor.rect)
+    def update(self, stat, value):
+        self.statistics[stat] += value
