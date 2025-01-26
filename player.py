@@ -46,6 +46,7 @@ class Player(Character):
                     self.rect.x -= _move_x
                     _move_x = 0
                 elif isinstance(spr, Exit):
+                    print(True, spr.rect, self.rect)
                     self.game.new_level()
 
         self.rect.y += _move_y
@@ -56,6 +57,7 @@ class Player(Character):
                     self.rect.y -= _move_y
                     _move_y = 0
                 elif isinstance(spr, Exit):
+                    print(True, spr)
                     self.game.new_level()
 
         if _move_x != 0 and _move_y != 0:
@@ -91,15 +93,21 @@ class PlayerGroup(pg.sprite.GroupSingle):
         super().__init__()
         self.game = game
 
-        self.start(self.game.environment.level)
+        self.start()
 
-    def start(self, level):
+    def _find_start(self):
         _size = Constants.cell_size
-        for y, row in enumerate(level):
+        for y, row in enumerate(self.game.environment.level):
             for x, col in enumerate(row):
                 if col == 9:
-                    Player(self.game, ((x + 0.5) * _size, (y + 0.5) * _size), FireBall).add(self)
-                    break
+                    return [(x + 0.5) * _size, (y + 0.5) * _size]
+
+    def start(self):
+        Player(self.game, self._find_start(), FireBall).add(self)
+
+    def new_level(self):
+        self.sprite.position = self._find_start()
+        self.sprite.set_position()
 
     def update(self, *args, **kwargs):
         super().update(*args, **kwargs)

@@ -52,11 +52,15 @@ class Enemies(CameraGroup):
     def __init__(self, game):
         super().__init__()
         self.game = game
-        self.start(self.game.environment.level)
+        self.start()
 
-    def start(self, level):
+    def start(self):
         cell_size = Constants.cell_size
-        for y, row in enumerate(level):
+        for y, row in enumerate(self.game.environment.level):
             for x, col in enumerate(row):
                 if col in {3, 5}:
                     Enemy(self.game, ('skull',), ((x + 0.5) * cell_size, (y + 0.5) * cell_size), 7.5, 150).add(self)
+
+    def new_level(self):
+        self.empty()
+        self.start()

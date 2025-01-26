@@ -75,13 +75,17 @@ class Environment(CameraGroup):
             6: (Wall, _images[6]),
             7: (Vase, _images[7]),
             8: (Chest, _images[8]),
-            9: (Exit, _images[9])
+            10: (Exit, _images[10])
         }
 
         self.levels = [load_level((Constants.data_directory, 'levels'), 'level1.csv'),
                        load_level((Constants.data_directory, 'levels'), 'level2.csv')]
         self.level = self.levels[0]
         self.start(self.level)
+
+    @property
+    def end(self):
+        return self.levels.index(self.level) + 1 >= len(self.levels)
 
     def start(self, level):
         _size = Constants.cell_size
@@ -92,11 +96,9 @@ class Environment(CameraGroup):
                     obj[0]((x * _size, y * _size), obj[1]).add(self)
 
     def new_level(self):
-        level = self.levels.index(self.level) + 1
-        if level < len(self.levels):
-            self.level = self.levels[self.levels.index(self.level) + 1]
-            self.empty()
-            self.start(self.level)
+        self.level = self.levels[self.levels.index(self.level) + 1]
+        self.empty()
+        self.start(self.level)
 
     def draw(self, surface, *args):
         surface_blit = surface.blit

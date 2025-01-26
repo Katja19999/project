@@ -34,7 +34,10 @@ class InGameHandler(Menu):
         self.paused = False
 
     def new_level(self):
-        self.environment.new_level()
+        if not self.environment.end:
+            self.environment.new_level()
+            self.player.new_level()
+            self.enemies.new_level()
 
     def update(self):
         _events = self.handler.events
