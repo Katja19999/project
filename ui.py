@@ -99,6 +99,10 @@ class Button(sprite.Sprite):
 ui = {
     'start_background': Image((0, 0), (), 'menu.png'),
     'end_background': Image((0, 0), (), 'game_over.png'),
+    'pause_text': Image((Constants.width // 2 - 160, Constants.height // 2 - 96), (), 'pause_image.png', True),
+    'restart_button': Button((Constants.width // 2, Constants.height // 2 + 64),
+                             (), 'restart_button.png', (192, 48),
+                             '#play'),
     'play_button': Button((Constants.width // 2, Constants.height // 2 + 64),
                           (), 'play_button.png', (144, 48),
                           '#play'),
@@ -120,4 +124,4 @@ ui = {
 special_keys = ((pg.K_ESCAPE, '#exit'), (pg.K_q, '#quit'))
 start_menu = (ui['start_background'], ui['play_button'], ui['quit_button'])
 game = (ui['pause_button'], ui['health_bar'], ui['game_ui'])
-end_menu = (ui['end_background'], )
+end_menu = (ui['end_background'], ui['quit_button'], ui['restart_button'])

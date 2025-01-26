@@ -26,11 +26,11 @@ class InGameHandler(Menu):
         self.player = PlayerGroup(self)
 
     def pause(self):
-        self.ui.add(ui['unpause_button'])
+        self.ui.add(ui['unpause_button'], ui['pause_text'])
         self.paused = True
 
     def unpause(self):
-        self.ui.remove(ui['unpause_button'])
+        self.ui.remove(ui['unpause_button'], ui['pause_text'])
         self.paused = False
 
     def new_level(self):

@@ -5,7 +5,7 @@ import pygame as pg
 from characters import Character
 from constants import Constants
 from objects import FireBall
-from environment import Wall, Exit
+from environment import Wall, Vase, Chest, Exit
 
 
 class Player(Character):
@@ -42,22 +42,20 @@ class Player(Character):
         _collided = pg.sprite.spritecollide(self, walls, False)
         if _collided:
             for spr in _collided:
-                if isinstance(spr, Wall) and _move_x:
+                if type(spr) in [Wall, Vase, Chest] and _move_x:
                     self.rect.x -= _move_x
                     _move_x = 0
                 elif isinstance(spr, Exit):
-                    print(True, spr.rect, self.rect)
                     self.game.new_level()
 
         self.rect.y += _move_y
         _collided = pg.sprite.spritecollide(self, walls, False)
         if _collided:
             for spr in _collided:
-                if isinstance(spr, Wall) and _move_y:
+                if type(spr) in [Wall, Vase, Chest] and _move_y:
                     self.rect.y -= _move_y
                     _move_y = 0
                 elif isinstance(spr, Exit):
-                    print(True, spr)
                     self.game.new_level()
 
         if _move_x != 0 and _move_y != 0:
