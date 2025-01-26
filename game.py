@@ -38,6 +38,8 @@ class InGameHandler(Menu):
             self.environment.new_level()
             self.player.new_level()
             self.enemies.new_level()
+        else:
+            self.function(self.functions['#end'])
 
     def update(self):
         _events = self.handler.events

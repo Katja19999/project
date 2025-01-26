@@ -78,8 +78,8 @@ class Environment(CameraGroup):
             10: (Exit, _images[10])
         }
 
-        self.levels = [load_level((Constants.data_directory, 'levels'), 'level1.csv'),
-                       load_level((Constants.data_directory, 'levels'), 'level2.csv')]
+        self.levels = [load_level((), 'level1.csv'),
+                       load_level((), 'level2.csv')]
         self.level = self.levels[0]
         self.start(self.level)
 
