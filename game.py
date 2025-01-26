@@ -45,7 +45,6 @@ class InGameHandler(Menu):
             self.end()
 
     def end(self):
-        print(self.stats.get('enemies killed'))
         write_result(self.stats.get('enemies killed'))
         self.function(self.functions['#end'])
 

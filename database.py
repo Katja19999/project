@@ -28,6 +28,6 @@ def get_result(cur=cursor):
 
 def write_result(result, con=connection, cur=cursor):
     existing_result = get_result()
-    if existing_result is None or result > existing_result:
+    if (existing_result is None) or (int(result) > int(existing_result)):
         cur.execute("INSERT INTO results (result) VALUES (?)", (result, ))
         con.commit()
