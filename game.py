@@ -37,12 +37,12 @@ class InGameHandler(Menu):
         self.paused = False
 
     def new_level(self):
-        if not self.environment.end:
+        if self.environment.end:
+            self.end()
+        elif not self.enemies.sprites():
             self.environment.new_level()
             self.player.new_level()
             self.enemies.new_level()
-        else:
-            self.end()
 
     def end(self):
         write_result(self.stats.get('enemies killed'))
